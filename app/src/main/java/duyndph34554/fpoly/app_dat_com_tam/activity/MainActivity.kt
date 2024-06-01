@@ -1,4 +1,4 @@
-package duyndph34554.fpoly.app_dat_com_tam
+package duyndph34554.fpoly.app_dat_com_tam.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
