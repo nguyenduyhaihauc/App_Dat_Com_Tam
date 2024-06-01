@@ -66,4 +66,18 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //    implement thu vien coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+//    implement runtime-livedata
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+
+//    implement navigation compose
+    val nav_version = "2.7.7"
+
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
 }
