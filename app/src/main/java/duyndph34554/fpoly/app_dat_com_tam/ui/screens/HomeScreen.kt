@@ -1,2 +1,9 @@
 package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 
+import androidx.compose.runtime.Composable
+
+@Composable
+fun HomeScreen() {
+
+}
+
