@@ -11,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import duyndph34554.fpoly.app_dat_com_tam.navigation.BottomBar
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.HomeScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.theme.App_Dat_Com_TamTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,30 +21,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            App_Dat_Com_TamTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            val navController = rememberNavController()
+            BottomBar(navCtrl = navController)
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    App_Dat_Com_TamTheme {
-        Greeting("Android")
     }
 }
