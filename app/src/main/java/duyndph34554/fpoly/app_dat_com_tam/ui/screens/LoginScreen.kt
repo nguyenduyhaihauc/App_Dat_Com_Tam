@@ -16,10 +16,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import duyndph34554.fpoly.app_dat_com_tam.R
+import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
@@ -41,7 +43,7 @@ fun LoginScreen() {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 32.dp)
             )
-           Image(
+            Image(
                 painter = painterResource(id = R.drawable.logosplash),
                 contentDescription = null,
                 modifier = Modifier
@@ -67,7 +69,9 @@ fun LoginScreen() {
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
-                onClick = { /* Xử lý đăng nhập */ },
+                onClick = {
+                    navController.navigate(RouterNameScreen.BottomScreen.router)
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFF5722) // Màu cam cho nút
                 ),
@@ -111,8 +115,4 @@ fun CustomTextField(label: String, value: String, onValueChange: (String) -> Uni
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen()
-}
+
