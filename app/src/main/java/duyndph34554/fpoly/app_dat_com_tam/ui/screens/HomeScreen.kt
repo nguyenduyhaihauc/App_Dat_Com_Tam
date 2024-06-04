@@ -71,8 +71,6 @@ fun HomeScreen(navController: NavController ?= null) {
 
 }
 
-
-
 @Composable
 fun TopAppBar(navController: NavController, iconLeft: Int, title: String, iconRight: Int? = null) {
    Row (

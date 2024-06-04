@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
@@ -73,14 +74,22 @@ dependencies {
     //    implement thu vien coil
     implementation("io.coil-kt:coil-compose:2.6.0")
 
-//    implement runtime-livedata
+    //    implement runtime-livedata
     implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
 
-//    implement navigation compose
+    //    implement navigation compose
     val nav_version = "2.7.7"
-
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    //Room db
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    // lifecycleScope:
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.1")
+    // viewModelScope:
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
 
 }
