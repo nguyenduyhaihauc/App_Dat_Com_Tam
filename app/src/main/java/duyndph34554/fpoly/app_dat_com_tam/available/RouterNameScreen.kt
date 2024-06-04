@@ -4,5 +4,8 @@ enum class RouterNameScreen(val router: String) {
     Home("Home"),
     Statistical("Statistical"),
     Manage("Manage"),
-    Support("Support")
+    Support("Support"),
+    Splash("Splash"),
+    Login("Login"),
+    BottomScreen("Bottom")
 }
