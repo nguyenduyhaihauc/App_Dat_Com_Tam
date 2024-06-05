@@ -90,7 +90,6 @@ fun CustomTextField(label: String, value: String, onValueChange: (String) -> Uni
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 40.dp)
     ) {
         Text(
             text = label,
