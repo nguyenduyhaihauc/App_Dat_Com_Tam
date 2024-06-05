@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +47,7 @@ val OrderArray = listOf(
     OrderModel("CT2E23E", 160.000, false),
     OrderModel("CT2E12E", 160.000, false),
 )
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -70,8 +70,6 @@ fun HomeScreen(navController: NavController ?= null) {
     )
 
 }
-
-
 
 @Composable
 fun TopAppBar(navController: NavController, iconLeft: Int, title: String, iconRight: Int? = null) {
@@ -115,22 +113,22 @@ fun TopAppBar(navController: NavController, iconLeft: Int, title: String, iconRi
    }
 }
 
-
-
 @Composable
 fun Content(navController: NavController) {
     Column (
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFF252121))
-            .padding(20.dp)
+            .padding(top = 50.dp)
     ) {
-        Box {
+        Box(
+            modifier = Modifier.padding(vertical = 10.dp)
+        ){
             Column (
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 0.dp, vertical = 20.dp)
+                    .padding(horizontal = 0.dp, vertical = 25.dp)
             ) {
                 Text(text = "Today: 19 - 05 - 2023",
                     fontSize = 20.sp,
@@ -169,7 +167,7 @@ fun Content(navController: NavController) {
 
 
         LazyColumn (
-            state = rememberLazyListState()
+            state = rememberLazyListState(),
         ) {
             items(OrderArray) {
                     order ->
@@ -217,7 +215,8 @@ fun ItemOrder(nameTitle: String, totalAmount: Double, status: Boolean) {
                         Text(text = "||",
                             fontSize = 20.sp,
                             fontWeight = FontWeight(600),
-                            color = Color.White
+                            color = Color.White,
+                            modifier = Modifier.padding(end = 40.dp)
                         )
 
                         Spacer(modifier = Modifier.width(10.dp))
@@ -225,7 +224,9 @@ fun ItemOrder(nameTitle: String, totalAmount: Double, status: Boolean) {
                         Text(text = totalAmount.toString(),
                             fontSize = 20.sp,
                             fontWeight = FontWeight(600),
-                            color = Color.White
+                            color = Color.White,
+                            modifier = Modifier.padding(start = 35.dp)
+
                         )
                     }
 
