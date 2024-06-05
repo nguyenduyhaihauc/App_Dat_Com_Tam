@@ -1,5 +1,6 @@
 package duyndph34554.fpoly.app_dat_com_tam.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
@@ -7,6 +8,7 @@ import androidx.room.Update
 import duyndph34554.fpoly.app_dat_com_tam.model.TypeRice
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface TypeRiceDao {
     @Query("SELECT * FROM typerice")
     fun getAll(): Flow<List<TypeRice>>
