@@ -7,5 +7,11 @@ enum class RouterNameScreen(val router: String) {
     Support("Support"),
     Splash("Splash"),
     Login("Login"),
-    BottomScreen("Bottom")
+    BottomScreen("Bottom"),
+    ManageTypeRice("ManageTypeRice"),
+    AddTypeRice("AddTypeRice"),
+    UpdateTypeRice("UpdateTypeRice"),
+    ListTypeRice("ListTypeRice"),
+
+
 }

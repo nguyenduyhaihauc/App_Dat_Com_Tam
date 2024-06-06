@@ -179,12 +179,7 @@ fun Content(navController: NavController) {
     }
 
 }
-@Preview(showBackground = true)
-@Composable
-fun PreviewContent() {
-    val navController = rememberNavController()
-    Content(navController)
-}
+
 @Composable
 fun ItemOrder(nameTitle: String, totalAmount: Double, status: Boolean) {
     Box {
