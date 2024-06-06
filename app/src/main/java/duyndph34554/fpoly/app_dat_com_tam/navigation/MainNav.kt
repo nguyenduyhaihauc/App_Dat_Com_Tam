@@ -7,13 +7,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddFoodScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddTypeRiceScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.DeleteFoodScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ListTypeRiceScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.LoginScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.Manage
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageFood
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.SplashScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.UpdateFoodScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.UpdateTypeRiceScreen
 
 
 @Composable
@@ -28,7 +31,9 @@ fun MainNavigation() {
         composable(RouterNameScreen.Login.router) { LoginScreen(navController) }
 
         composable(RouterNameScreen.BottomScreen.router) { BottomBar(navController) }
-
+        composable(RouterNameScreen.AddTypeRice.router) { AddTypeRiceScreen() }
+        composable(RouterNameScreen.UpdateTypeRice.router) { UpdateTypeRiceScreen() }
+        composable(RouterNameScreen.ListTypeRice.router) { ListTypeRiceScreen() }
 
 
         composable(RouterNameScreen.AddFood.router) { AddFoodScreen(navController) }

@@ -59,7 +59,9 @@ fun Manage(navController: NavController) {
             .background(color = Color(0xFF252121))
             .padding(top = 100.dp)
     ) {
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = {
+                         navController.navigate(RouterNameScreen.ManageTypeRice.router)
+        },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF252121)
             )
