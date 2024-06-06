@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -73,44 +74,48 @@ fun HomeScreen(navController: NavController ?= null) {
 
 @Composable
 fun TopAppBar(navController: NavController, iconLeft: Int, title: String, iconRight: Int? = null) {
-   Row (
-       modifier = Modifier
-           .fillMaxWidth()
-           .background(color = Color(0xFF252121)),
-       horizontalArrangement = Arrangement.SpaceBetween,
-       verticalAlignment = Alignment.CenterVertically
-   ) {
-       Box {
-           Row (
-               modifier = Modifier.padding(10.dp),
-               verticalAlignment = Alignment.CenterVertically
-           ) {
-               Image(painter = painterResource(id = iconLeft),
-                   contentDescription = "logo Home",
-                   modifier = Modifier.size(57.dp)
-               )
+    Column {
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = Color(0xFF252121)),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box {
+                Row (
+                    modifier = Modifier.padding(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(painter = painterResource(id = iconLeft),
+                        contentDescription = "logo Home",
+                        modifier = Modifier.size(57.dp)
+                    )
 
-               Spacer(modifier = Modifier.width(3.dp))
+                    Spacer(modifier = Modifier.width(3.dp))
 
-               Text(text = title,
-                   fontSize = 17.sp,
-                   fontWeight = FontWeight(700),
-                   color = Color.White
-               )
-           }
-       }
+                    Text(text = title,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight(700),
+                        color = Color.White
+                    )
+                }
+            }
 
-       if (iconRight != null) {
-           IconButton(onClick = { /*TODO*/ }) {
-               Icon(painter = painterResource(id = iconRight),
-                   contentDescription = "logo Notifi",
-                   modifier = Modifier.size(28.dp),
-                   tint = Color.Unspecified
-               )
-           }
-       }
+            if (iconRight != null) {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(painter = painterResource(id = iconRight),
+                        contentDescription = "logo Notifi",
+                        modifier = Modifier.size(28.dp),
+                        tint = Color.Unspecified
+                    )
+                }
+            }
 
-   }
+        }
+        Divider(color = Color.Gray)
+    }
+
 }
 
 @Composable

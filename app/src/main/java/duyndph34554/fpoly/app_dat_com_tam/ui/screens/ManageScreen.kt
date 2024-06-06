@@ -32,12 +32,11 @@ import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
+import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
 
-@Preview
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ManageScreen () {
-    val navController = rememberNavController()
+fun ManageScreen (navController: NavController) {
     Scaffold (
         topBar = {
             TopAppBar(navController = navController,
@@ -86,7 +85,9 @@ fun Manage(navController: NavController) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = {
+                         navController.navigate(RouterNameScreen.ManageFood.router)
+        },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF252121)
             )

@@ -4,17 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.Row
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,14 +35,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddFoodScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.HomeScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageFood
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.StatisticalScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.SupportScreen
 
-@Preview(showBackground = true)
 @Composable
-fun BottomBar(navCtrl: NavController? = null) {
+fun BottomBar(navCtrl: NavController) {
 
     val navController = rememberNavController()
 
@@ -181,7 +184,7 @@ fun BottomBar(navCtrl: NavController? = null) {
                     }
                 }
 
-                
+
             }
         }
     ) {
@@ -198,9 +201,10 @@ fun BottomBar(navCtrl: NavController? = null) {
             }
 
             composable(RouterNameScreen.Manage.router) {
-                ManageScreen()
+                ManageScreen(navController)
             }
 
+            composable(RouterNameScreen.ManageFood.router) { ManageFood(navCtrl) }
             composable(RouterNameScreen.Support.router) {
                 SupportScreen()
             }
