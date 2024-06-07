@@ -199,7 +199,7 @@ fun BottomBar(navCtrl: NavController) {
             }
 
             composable(RouterNameScreen.Statistical.router) {
-                StatisticalScreen()
+                StatisticalScreen(navCtrl)
             }
 
             composable(RouterNameScreen.Manage.router) {
