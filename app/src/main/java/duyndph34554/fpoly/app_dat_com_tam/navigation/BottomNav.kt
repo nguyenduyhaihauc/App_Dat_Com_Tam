@@ -206,7 +206,7 @@ fun BottomBar(navCtrl: NavController) {
 
             composable(RouterNameScreen.ManageFood.router) { ManageFood(navCtrl) }
             composable(RouterNameScreen.Support.router) {
-                SupportScreen()
+                SupportScreen(navCtrl)
             }
 
         }
