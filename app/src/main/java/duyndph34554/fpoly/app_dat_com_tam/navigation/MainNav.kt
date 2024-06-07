@@ -31,8 +31,8 @@ fun MainNavigation() {
         composable(RouterNameScreen.Login.router) { LoginScreen(navController) }
 
         composable(RouterNameScreen.BottomScreen.router) { BottomBar(navController) }
-        composable(RouterNameScreen.AddTypeRice.router) { AddTypeRiceScreen() }
-        composable(RouterNameScreen.UpdateTypeRice.router) { UpdateTypeRiceScreen() }
+        composable(RouterNameScreen.AddTypeRice.router) { AddTypeRiceScreen(navController) }
+        composable(RouterNameScreen.UpdateTypeRice.router) { UpdateTypeRiceScreen(navController) }
         composable(RouterNameScreen.ListTypeRice.router) { ListTypeRiceScreen() }
 
 

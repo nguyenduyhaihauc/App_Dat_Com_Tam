@@ -94,7 +94,7 @@ fun ManageTypeRice(navController: NavController) {
 
         Button(
             onClick = {
-                navController.navigate(RouterNameScreen.ListTypeRice.router)
+                navController.navigate(RouterNameScreen.UpdateTypeRice.router)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF252121)
