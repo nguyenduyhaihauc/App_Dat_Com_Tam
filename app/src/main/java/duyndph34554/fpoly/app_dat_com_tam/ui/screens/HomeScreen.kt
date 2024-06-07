@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.model.OrderModel
+import duyndph34554.fpoly.app_dat_com_tam.room.model.OrderModel
 
 val OrderArray = listOf(
     OrderModel("CT2E22E", 162.000, false),

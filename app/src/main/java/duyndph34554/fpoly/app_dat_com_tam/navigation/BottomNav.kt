@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.Row
 
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -25,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
@@ -35,12 +32,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddFoodScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.HomeScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageFood
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageScreen
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageTypeRice
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageTypeRiceScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.StatisticalScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.SupportScreen
 
@@ -199,15 +193,15 @@ fun BottomBar(navCtrl: NavController) {
             }
 
             composable(RouterNameScreen.Statistical.router) {
-                StatisticalScreen()
+                StatisticalScreen(navCtrl)
             }
 
             composable(RouterNameScreen.Manage.router) {
-                ManageScreen(navController)
+                ManageScreen(navCtrl)
             }
-            composable(RouterNameScreen.ManageTypeRice.router) { ManageTypeRiceScreen(navCtrl) }
 
             composable(RouterNameScreen.ManageFood.router) { ManageFood(navCtrl) }
+
             composable(RouterNameScreen.Support.router) {
                 SupportScreen(navCtrl)
             }

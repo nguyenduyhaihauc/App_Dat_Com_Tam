@@ -9,10 +9,11 @@ enum class RouterNameScreen(val router: String) {
     Login("Login"),
     BottomScreen("Bottom"),
     ManageFood("ManageFood"),
-    ManageTypeRice("ManageTypeRice"),
+
     AddTypeRice("AddTypeRice"),
     UpdateTypeRice("UpdateTypeRice"),
     ListTypeRice("ListTypeRice"),
+
     AddFood("AddFood"),
     UpdateFood("UpdateFood"),
     DeleteFood("DeleteFood")

@@ -1,4 +1,4 @@
-package duyndph34554.fpoly.app_dat_com_tam.model
+package duyndph34554.fpoly.app_dat_com_tam.room.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
