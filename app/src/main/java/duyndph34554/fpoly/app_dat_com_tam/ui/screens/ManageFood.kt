@@ -50,15 +50,15 @@ fun ContentManageFood(navController: NavController) {
             .background(color = Color(0xFF252121))
             .padding(top = 100.dp)
     ) {
-        ItemManage(image = R.drawable.logo_home, title = "Them mon an") {
+        ItemManage(image = R.drawable.logo_home, title = "Thêm món ăn") {
             navController.navigate(RouterNameScreen.AddFood.router)
         }
 
-        ItemManage(image = R.drawable.logo_home, title = "Sua mon an") {
+        ItemManage(image = R.drawable.logo_home, title = "Sửa món ăn") {
             navController.navigate(RouterNameScreen.UpdateFood.router)
         }
 
-        ItemManage(image = R.drawable.logo_home, title = "Xoa mon an") {
+        ItemManage(image = R.drawable.logo_home, title = "Xóa món ăn") {
             navController.navigate(RouterNameScreen.DeleteFood.router)
         }
     }

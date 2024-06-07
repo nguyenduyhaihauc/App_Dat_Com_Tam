@@ -37,7 +37,7 @@ fun MainNavigation() {
 
 
         composable(RouterNameScreen.AddFood.router) { AddFoodScreen(navController) }
-        composable(RouterNameScreen.UpdateFood.router) { UpdateFoodScreen()}
-        composable(RouterNameScreen.DeleteFood.router) { DeleteFoodScreen()}
+        composable(RouterNameScreen.UpdateFood.router) { UpdateFoodScreen(navController)}
+        composable(RouterNameScreen.DeleteFood.router) { DeleteFoodScreen(navController)}
     }
 }
