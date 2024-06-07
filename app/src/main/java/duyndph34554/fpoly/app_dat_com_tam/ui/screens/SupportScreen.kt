@@ -32,7 +32,7 @@ fun SupportScreen (navController: NavController) {
         topBar = {
             TopAppBar(navController = navController,
                 iconLeft = R.drawable.logo_home,
-                title = "Com tưm đim"
+                title = "Com tứm đim"
             )
         },
         content = {
