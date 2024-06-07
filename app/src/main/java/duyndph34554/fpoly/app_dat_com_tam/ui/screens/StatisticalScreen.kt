@@ -35,7 +35,7 @@ fun StatisticalScreen (navController: NavController) {
             )
         },
         content = {
-            ContentSupport()
+            Statistical()
         }
     )
 }
