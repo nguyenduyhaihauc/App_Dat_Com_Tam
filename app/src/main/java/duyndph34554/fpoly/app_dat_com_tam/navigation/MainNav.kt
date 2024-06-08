@@ -34,6 +34,7 @@ fun MainNavigation() {
         composable(RouterNameScreen.AddTypeRice.router) { AddTypeRiceScreen(navController) }
         composable(RouterNameScreen.UpdateTypeRice.router) { UpdateTypeRiceScreen(navController) }
         composable(RouterNameScreen.ListTypeRice.router) { ListTypeRiceScreen(navController) }
+        composable(RouterNameScreen.ManageFood.router) { ManageFood(navController) }
 
 
         composable(RouterNameScreen.AddFood.router) { AddFoodScreen(navController) }

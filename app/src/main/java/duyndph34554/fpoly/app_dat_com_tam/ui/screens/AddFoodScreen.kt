@@ -1,6 +1,10 @@
 package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,18 +34,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.room.Room
+import coil.compose.rememberAsyncImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
+import duyndph34554.fpoly.app_dat_com_tam.model.FoodDao
+import duyndph34554.fpoly.app_dat_com_tam.model.FoodDatabase
+import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -54,16 +74,16 @@ fun AddFoodScreen(navController: NavController) {
                 title = "Cum tưm đim")
         },
         content = {
-            ContentAddFood()
+            ContentAddFood(navController)
         },
-        modifier = Modifier.padding(PaddingValues(top = 32.dp))
+//        modifier = Modifier.padding(PaddingValues(top = 32.dp))
     )
 }
 
 //@Preview(showBackground = true, showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentAddFood() {
+fun ContentAddFood(navController: NavController) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -80,29 +100,61 @@ fun ContentAddFood() {
         mutableStateOf("")
     }
 
+    var imageUrl by remember {
+        mutableStateOf("")
+    }
+
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val db = Room.databaseBuilder(
+        context = context,
+        FoodDatabase::class.java, "foods-db2"
+    ).build()
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) {uri: Uri? ->
+        uri?.let {
+            imageUrl= it.toString()
+        }
+    }
+
     Column (
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFF252121))
-            .padding(top = 100.dp, start = 20.dp, end = 20.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(top = 100.dp, start = 20.dp, end = 20.dp)
     ) {
 
         Box (
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { launcher.launch("image/*") },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 elevation = null,
                 modifier = Modifier.size(205.dp)
             ) {
-                Image(painter = painterResource(id = R.drawable.img_addanh),
-                    contentDescription = null,
-                    modifier = Modifier.size(205.dp)
-                )
+                Box (contentAlignment = Alignment.Center, modifier = Modifier.size(205.dp)) {
+                    Image(painter = painterResource(id = R.drawable.img_addanh),
+                        contentDescription = null,
+                        modifier = Modifier.size(205.dp)
+                    )
+
+                    if (imageUrl.isNotEmpty()) {
+                        Image(
+                            painter = rememberAsyncImagePainter(imageUrl),
+                            contentDescription = null,
+                            modifier = Modifier.size(205.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                }
+
             }
         }
+
+
 
 //    Loai mon an 
         Text(text = "Loại món",
@@ -204,7 +256,19 @@ fun ContentAddFood() {
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-           Button(onClick = { /*TODO*/ },
+           Button(onClick = {
+                            coroutineScope.launch {
+                                db.foodDao().insertFood(
+                                    FoodModel(
+                                        namefood = tenmonan,
+                                        typefood = typeFood,
+                                        pricefood = giamonan.toDoubleOrNull() ?: 0.0,
+                                        imageurl = imageUrl
+                                    )
+                                )
+                                navController.popBackStack()
+                            }
+           },
                colors = ButtonDefaults.buttonColors(
                    containerColor = Color("#FFB703".toColorInt()),
                    contentColor = Color.White

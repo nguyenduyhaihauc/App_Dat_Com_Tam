@@ -203,11 +203,10 @@ fun BottomBar(navCtrl: NavController) {
             }
 
             composable(RouterNameScreen.Manage.router) {
-                ManageScreen(navController)
+                ManageScreen(navCtrl)
             }
             composable(RouterNameScreen.ManageTypeRice.router) { ManageTypeRiceScreen(navCtrl) }
 
-            composable(RouterNameScreen.ManageFood.router) { ManageFood(navCtrl) }
             composable(RouterNameScreen.Support.router) {
                 SupportScreen(navCtrl)
             }

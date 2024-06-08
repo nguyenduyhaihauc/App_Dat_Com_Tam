@@ -90,4 +90,7 @@ dependencies {
     // viewModelScope:
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
 
+//    Image Picker
+    implementation("androidx.activity:activity-ktx:1.9.0")
+
 }
