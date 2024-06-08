@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ListTypeRiceScreen(navController: NavController) {
+fun ManageTypeRiceScreen(navController: NavController) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -47,19 +47,20 @@ fun ListTypeRiceScreen(navController: NavController) {
         },
         modifier = Modifier.fillMaxSize(),
         snackbarHost = { CustomSnackbarHost(snackbarHostState) }
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(top = 110.dp)
+                .fillMaxSize()
+                .background(color = Color(0xFF252121)),
         ) {
-        Box(modifier = Modifier
-            .padding(top = 110.dp)
-            .fillMaxSize()
-            .background(color = Color(0xFF252121)) ,
-        ) {
-            ListTypeRice(navController = navController, snackbarHostState = snackbarHostState)
+            ManageTypeRice(navController = navController, snackbarHostState = snackbarHostState)
         }
     }
 }
 
 @Composable
-fun ListTypeRice(navController: NavController,snackbarHostState: SnackbarHostState) {
+fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHostState) {
     val context = navController.context
     val database = remember { TypeRiceDb.getIntance(context) }
     val typeRiceDao = database.typeRiceDao()
@@ -95,14 +96,15 @@ fun ListTypeRice(navController: NavController,snackbarHostState: SnackbarHostSta
                 typeRice = typeRice,
                 onUpdate = {
                     val typeRiceJson = Gson().toJson(typeRice)
-                    navController.navigate("${RouterNameScreen.UpdateTypeRice.router}/$typeRiceJson")                },
+                    navController.navigate("${RouterNameScreen.UpdateTypeRice.router}/$typeRiceJson")
+                },
                 onDelete = {
                     coroutineScope.launch {
 
                         typeRiceDao.deleteTypeRice(typeRice)
                         typeRiceList = typeRiceList.filter { it.typeRiceId != typeRice.typeRiceId }
 
-                        snackbarHostState.showSnackbar("Đã xóa thành công",null,true)
+                        snackbarHostState.showSnackbar("Đã xóa thành công", null, true)
                     }
                 }
             )
@@ -114,10 +116,10 @@ fun ListTypeRice(navController: NavController,snackbarHostState: SnackbarHostSta
 fun TypeRiceItem(typeRice: TypeRice, onUpdate: () -> Unit, onDelete: () -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
 
-if(showDialog){
-    CustomDialog(title = "Xác nhận xóa", message ="Bạn chắc chắn muốn xóa loại cơm này chứ?" ,
-        onConfirm = {onDelete()}, onCancel = { showDialog=false})
-}
+    if (showDialog) {
+        CustomDialog(title = "Xác nhận xóa", message = "Bạn chắc chắn muốn xóa loại cơm này chứ?",
+            onConfirm = { onDelete() }, onCancel = { showDialog = false })
+    }
 
     Card(
         modifier = Modifier
@@ -146,7 +148,7 @@ if(showDialog){
                             tint = Color.White
                         )
                     }
-                    IconButton(onClick = {showDialog=true}) {
+                    IconButton(onClick = { showDialog = true }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete",

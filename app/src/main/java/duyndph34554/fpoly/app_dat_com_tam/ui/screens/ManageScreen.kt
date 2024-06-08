@@ -3,8 +3,7 @@ package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -28,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
@@ -63,7 +61,7 @@ fun Manage(navController: NavController) {
     ) {
         Button(
             onClick = {
-                navController.navigate(RouterNameScreen.ListTypeRice.router)
+                navController.navigate(RouterNameScreen.ManageTypeRice.router)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF252121)

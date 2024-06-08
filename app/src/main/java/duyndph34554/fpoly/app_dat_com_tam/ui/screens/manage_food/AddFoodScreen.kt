@@ -1,4 +1,4 @@
-package duyndph34554.fpoly.app_dat_com_tam.ui.screens
+package duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_food
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -8,7 +8,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,15 +44,17 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import androidx.room.Room
+import coil.compose.rememberAsyncImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.launch
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun UpdateFoodScreen(navController: NavController) {
+fun AddFoodScreen(navController: NavController) {
     Scaffold (
         topBar = {
             CustomTopBar(onBackClick = { navController.popBackStack() },
@@ -60,15 +62,15 @@ fun UpdateFoodScreen(navController: NavController) {
                 title = "Cum tưm đim")
         },
         content = {
-            ContentUpdateFood(navController)
+            ContentAddFood(navController)
         },
-//        modifier = Modifier.padding(PaddingValues(top = 32.dp))
     )
 }
 
+//@Preview(showBackground = true, showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentUpdateFood(navController: NavController) {
+fun ContentAddFood(navController: NavController) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -108,8 +110,7 @@ fun ContentUpdateFood(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFF252121))
-            .padding(top = 100.dp, start = 20.dp, end = 20.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(top = 100.dp, start = 20.dp, end = 20.dp)
     ) {
 
         Box (
@@ -121,14 +122,28 @@ fun ContentUpdateFood(navController: NavController) {
                 elevation = null,
                 modifier = Modifier.size(205.dp)
             ) {
-                Image(painter = painterResource(id = R.drawable.img_addanh),
-                    contentDescription = null,
-                    modifier = Modifier.size(205.dp)
-                )
+                Box (contentAlignment = Alignment.Center, modifier = Modifier.size(205.dp)) {
+                    Image(painter = painterResource(id = R.drawable.img_addanh),
+                        contentDescription = null,
+                        modifier = Modifier.size(205.dp)
+                    )
+
+                    if (imageUrl.isNotEmpty()) {
+                        Image(
+                            painter = rememberAsyncImagePainter(imageUrl),
+                            contentDescription = null,
+                            modifier = Modifier.size(205.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                }
+
             }
         }
 
-//    Loai mon an
+
+
+//    Loai mon an 
         Text(text = "Loại món",
             fontSize = 14.sp,
             fontWeight = FontWeight(400),
@@ -153,11 +168,11 @@ fun ContentUpdateFood(navController: NavController) {
                     .menuAnchor()
                     .fillMaxWidth()
             )
-
+            
             ExposedDropdownMenu(expanded = expanded,
                 onDismissRequest = {expanded = false}
             ) {
-                DropdownMenuItem(text = {
+                DropdownMenuItem(text = { 
                     Text(text = "Món chính")
                 }, onClick = {
                     typeFood = "Món chính"
@@ -221,38 +236,38 @@ fun ContentUpdateFood(navController: NavController) {
                 .fillMaxWidth()
                 .background(color = Color.White, shape = RoundedCornerShape(5.dp))
         )
-
+        
         Spacer(modifier = Modifier.height(60.dp))
-
+        
         Box (
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
-            Button(onClick = {
-                coroutineScope.launch {
-                    db.foodDao().insertFood(
-                        FoodModel(
-                            namefood = tenmonan,
-                            typefood = typeFood,
-                            pricefood = giamonan.toDoubleOrNull() ?: 0.0,
-                            imageurl = imageUrl
-                        )
-                    )
-                    navController.popBackStack()
-                }
-            },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color("#FFB703".toColorInt()),
-                    contentColor = Color.White
-                ),
-                modifier = Modifier.width(200.dp),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Text(text = "Update",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight(700)
-                )
-            }
+           Button(onClick = {
+                            coroutineScope.launch {
+                                db.foodDao().insertFood(
+                                    FoodModel(
+                                        namefood = tenmonan,
+                                        typefood = typeFood,
+                                        pricefood = giamonan.toDoubleOrNull() ?: 0.0,
+                                        imageurl = imageUrl
+                                    )
+                                )
+                                navController.popBackStack()
+                            }
+           },
+               colors = ButtonDefaults.buttonColors(
+                   containerColor = Color("#FFB703".toColorInt()),
+                   contentColor = Color.White
+               ),
+               modifier = Modifier.width(200.dp),
+               shape = RoundedCornerShape(10.dp)
+           ) {
+               Text(text = "Thêm",
+                   fontSize = 20.sp,
+                   fontWeight = FontWeight(700)
+               )
+           } 
         }
 
     }
