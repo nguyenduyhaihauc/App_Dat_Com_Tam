@@ -69,6 +69,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation ("com.google.code.gson:gson:2.8.8")
+
     //    implement thu vien coil
     implementation("io.coil-kt:coil-compose:2.6.0")
 
@@ -89,5 +91,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.1")
     // viewModelScope:
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
+
 
 }

@@ -16,10 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
 import duyndph34554.fpoly.app_dat_com_tam.room.database.TypeRiceDb
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
+import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomDialog
+import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomSnackbarHost
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -27,6 +30,8 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ListTypeRiceScreen(navController: NavController) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
         topBar = {
             CustomTopBar(onBackClick = {
@@ -40,17 +45,21 @@ fun ListTypeRiceScreen(navController: NavController) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Type Rice")
             }
         },
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        snackbarHost = { CustomSnackbarHost(snackbarHostState) }
         ) {
-        Box(modifier = Modifier.padding(top = 110.dp).fillMaxSize().background(color = Color(0xFF252121)) ,
+        Box(modifier = Modifier
+            .padding(top = 110.dp)
+            .fillMaxSize()
+            .background(color = Color(0xFF252121)) ,
         ) {
-            ListTypeRice(navController = navController)
+            ListTypeRice(navController = navController, snackbarHostState = snackbarHostState)
         }
     }
 }
 
 @Composable
-fun ListTypeRice(navController: NavController) {
+fun ListTypeRice(navController: NavController,snackbarHostState: SnackbarHostState) {
     val context = navController.context
     val database = remember { TypeRiceDb.getIntance(context) }
     val typeRiceDao = database.typeRiceDao()
@@ -85,14 +94,15 @@ fun ListTypeRice(navController: NavController) {
             TypeRiceItem(
                 typeRice = typeRice,
                 onUpdate = {
-                    navController.navigate(RouterNameScreen.UpdateTypeRice.router)
-                },
+                    val typeRiceJson = Gson().toJson(typeRice)
+                    navController.navigate("${RouterNameScreen.UpdateTypeRice.router}/$typeRiceJson")                },
                 onDelete = {
                     coroutineScope.launch {
 
                         typeRiceDao.deleteTypeRice(typeRice)
-
                         typeRiceList = typeRiceList.filter { it.typeRiceId != typeRice.typeRiceId }
+
+                        snackbarHostState.showSnackbar("Đã xóa thành công",null,true)
                     }
                 }
             )
@@ -102,6 +112,13 @@ fun ListTypeRice(navController: NavController) {
 
 @Composable
 fun TypeRiceItem(typeRice: TypeRice, onUpdate: () -> Unit, onDelete: () -> Unit) {
+    var showDialog by remember { mutableStateOf(false) }
+
+if(showDialog){
+    CustomDialog(title = "Xác nhận xóa", message ="Bạn chắc chắn muốn xóa loại cơm này chứ?" ,
+        onConfirm = {onDelete()}, onCancel = { showDialog=false})
+}
+
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -129,7 +146,7 @@ fun TypeRiceItem(typeRice: TypeRice, onUpdate: () -> Unit, onDelete: () -> Unit)
                             tint = Color.White
                         )
                     }
-                    IconButton(onClick = onDelete) {
+                    IconButton(onClick = {showDialog=true}) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete",

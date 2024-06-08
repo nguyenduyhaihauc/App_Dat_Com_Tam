@@ -22,13 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.window.Dialog
+
+
+//------------------ Topbar
 @Composable
 fun CustomTopBar(onBackClick: () -> Unit, image: Int, title: String) {
     Column {
@@ -65,6 +66,8 @@ fun CustomTopBar(onBackClick: () -> Unit, image: Int, title: String) {
 
 }
 
+
+//------------------------ Dialog
 
 @Composable
 fun CustomDialog(
@@ -110,11 +113,49 @@ fun CustomDialog(
                         Text("Cancel")
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = onConfirm, shape = MaterialTheme.shapes.medium) {
+                    Button(onClick = onConfirm, shape = MaterialTheme.shapes.medium,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB703)),
+                    ) {
                         Text("OK")
                     }
                 }
             }
         }
+    }
+}
+
+//-------------------------- Custom snackbarhost
+@Composable
+fun CustomSnackbarHost(hostState: SnackbarHostState) {
+    SnackbarHost(
+        hostState = hostState,
+        snackbar = { data: SnackbarData ->
+            CustomSnackbar(data)
+        }
+    )
+}
+
+@Composable
+fun CustomSnackbar(data: SnackbarData) {
+    Snackbar(
+        modifier = Modifier
+            .padding(16.dp)
+            .background(color = Color.Black),
+        action = {
+            TextButton(onClick = { data.dismiss() }) {
+                Text(
+                    text = "Ẩn",
+                    color = Color.White,
+                    fontSize = 14.sp
+                )
+            }
+        }
+    ) {
+        Text(
+            text = data.visuals.message,
+            color = Color.White,
+            fontSize = 14.sp,
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }
