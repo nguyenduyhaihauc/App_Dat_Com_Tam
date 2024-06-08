@@ -1,9 +1,9 @@
 package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -16,8 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.room.Room
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
+import duyndph34554.fpoly.app_dat_com_tam.room.database.AccountDb
+import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTextField
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -62,14 +65,21 @@ fun LoginScreen(navController: NavController) {
             CustomTextField(
                 label = "Mật khẩu",
                 value = password.value,
-                onValueChange = { password.value = it }
+                onValueChange = { password.value = it },
+                isPassword = true
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
                 onClick = {
-                    navController.navigate(RouterNameScreen.BottomScreen.router)
+                    val userName = email.value
+                    val passWord = password.value
+                    if (userName.isNotEmpty() && passWord.isNotEmpty()) {
+
+                            navController.navigate(RouterNameScreen.BottomScreen.router)
+
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFF5722) // Màu cam cho nút
@@ -83,34 +93,4 @@ fun LoginScreen(navController: NavController) {
         }
     }
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CustomTextField(label: String, value: String, onValueChange: (String) -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Text(
-            text = label,
-            color = Color.White,
-            fontSize = 16.sp,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = Color(0xFFE0E0E0),
-                cursorColor = Color.Black,
-                focusedBorderColor = Color.Black,
-                unfocusedBorderColor = Color.Gray
-            )
-        )
-    }
-}
-
 

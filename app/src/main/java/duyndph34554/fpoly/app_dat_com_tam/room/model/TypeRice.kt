@@ -8,5 +8,4 @@ import androidx.room.PrimaryKey
 data class TypeRice(
     @PrimaryKey(autoGenerate = true) var typeRiceId: Int = 0,
     @ColumnInfo(name = "typeRiceName") var typeRiceName: String?,
-
 )
