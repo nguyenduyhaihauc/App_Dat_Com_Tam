@@ -16,5 +16,6 @@ enum class RouterNameScreen(val router: String) {
 
     AddFood("AddFood"),
     UpdateFood("UpdateFood"),
-    DeleteFood("DeleteFood")
+    DeleteFood("DeleteFood"),
+
 }
