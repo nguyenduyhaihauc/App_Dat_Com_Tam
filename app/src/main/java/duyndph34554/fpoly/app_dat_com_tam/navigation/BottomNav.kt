@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
@@ -32,6 +33,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddFoodScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.HomeScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageFood
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageScreen
@@ -200,8 +202,6 @@ fun BottomBar(navCtrl: NavController) {
             composable(RouterNameScreen.Manage.router) {
                 ManageScreen(navCtrl)
             }
-
-            composable(RouterNameScreen.ManageFood.router) { ManageFood(navCtrl) }
 
             composable(RouterNameScreen.Support.router) {
                 SupportScreen(navCtrl)
