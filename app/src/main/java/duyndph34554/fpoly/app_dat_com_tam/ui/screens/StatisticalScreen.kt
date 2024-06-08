@@ -110,7 +110,9 @@ fun Statistical() {
         Row(
             modifier = Modifier
                 .background(Color(0xFF2F2D2D))
+                .height(46.dp)
                 .fillMaxWidth(),
+
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         )  {
@@ -128,6 +130,12 @@ fun Statistical() {
                     fontWeight = FontWeight.Bold
                 )
             }
+
+            Spacer(modifier = Modifier
+                .width(1.dp)
+                .background(Color(0xFF000000))
+                .fillMaxHeight()
+            )
             Button(
                 onClick = { selectedTab = "Biểu đồ" },
                 colors = ButtonDefaults.buttonColors(
