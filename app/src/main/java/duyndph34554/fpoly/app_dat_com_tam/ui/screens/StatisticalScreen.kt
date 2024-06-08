@@ -46,7 +46,8 @@ fun StatisticalScreen(navController: NavController) {
             Box() {
                 Statistical()
             }
-        }
+
+        },
     )
 }
 
@@ -99,7 +100,7 @@ fun Statistical() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF252121))
-            .padding(top = 14.dp)
+            .padding(top = 100.dp)
         ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
