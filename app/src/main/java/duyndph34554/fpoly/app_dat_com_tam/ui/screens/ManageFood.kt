@@ -2,8 +2,10 @@ package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -119,6 +121,73 @@ fun ContentManageFood(navController: NavController) {
 }
 
 @Composable
+fun FoodInfoDialog(food: FoodModel, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Column (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Thông tin món ăn",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight(700))
+            }
+
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = rememberImagePainter(food.imageurl),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(128.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                )
+                Text(
+                    text = "Tên: ${food.namefood}",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(500)
+                )
+                Text(
+                    text = "Loại: ${food.typefood}",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(500)
+                )
+                Text(
+                    text = "Giá: ${food.pricefood}",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight(500)
+                )
+            }
+        },
+        confirmButton = {
+            Column (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(onClick = onDismiss,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color("#FFB703".toColorInt()),
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.width(100.dp)
+                ) {
+                    Text(text = "Đóng",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight(700))
+                }
+            }
+
+        }
+    )
+}
+
+@Composable
 fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit) {
     var showDialog by remember {
         mutableStateOf(false)
@@ -126,6 +195,10 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
 
     var foodToDelete by remember {
         mutableStateOf<FoodModel?>(null)
+    }
+
+    var showDetalFood by remember {
+        mutableStateOf(false)
     }
 
     val coroutineScope = rememberCoroutineScope()
@@ -138,8 +211,27 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
 
     if (showDialog && foodToDelete != null) {
         AlertDialog(onDismissRequest = {showDialog = false},
-            title = { Text(text = "Thông Báo", fontSize = 30.sp, fontWeight = FontWeight(700))},
-            text = { Text(text = "Bạn có chắc chắn muốn xóa món ăn này không?", fontSize = 20.sp, fontWeight = FontWeight(500))},
+            title = {
+                Column (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "Thông Báo",
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight(700)
+                    )
+                }},
+            text = {
+                Column (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "Bạn có chắc chắn muốn xóa món ăn này không?",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight(500)
+                    )
+                }
+                },
             confirmButton = {
                 Button(onClick = {
                     coroutineScope.launch {
@@ -147,6 +239,7 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
                         onDelete()
                         showDialog = false
                         foodToDelete = null
+                        Toast.makeText(context, "Delete Food Successfully", Toast.LENGTH_SHORT).show()
                     }
                 },
                     colors = ButtonDefaults.buttonColors(
@@ -169,10 +262,14 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
                     ),
                     shape = RoundedCornerShape(10.dp)
                 ) {
-                    Text(text = "Huy")
+                    Text(text = "Hủy")
                 }
             }
         )
+    }
+
+    if (showDetalFood) {
+        FoodInfoDialog(food = food, onDismiss = { showDetalFood = false })
     }
     Box {
         Row (
@@ -182,7 +279,8 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
                 .background(
                     color = Color("#2F2D2D".toColorInt()),
                     shape = RoundedCornerShape(10.dp)
-                ),
+                )
+                .clickable { showDetalFood = true },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -220,7 +318,7 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
             ) {
 
                 IconButton(onClick = {
-                    navController.navigate(RouterNameScreen.UpdateFood.router)
+                    navController.navigate(RouterNameScreen.UpdateFoodWithId(food.foodid))
                 }) {
                     Icon(imageVector = Icons.Default.Edit,
                         contentDescription = null,

@@ -2,6 +2,7 @@ package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -28,6 +29,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,7 +55,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun UpdateFoodScreen(navController: NavController) {
+fun UpdateFoodScreen(navController: NavController, foodId: Int) {
     Scaffold (
         topBar = {
             CustomTopBar(onBackClick = { navController.popBackStack() },
@@ -60,7 +63,7 @@ fun UpdateFoodScreen(navController: NavController) {
                 title = "Cum tưm đim")
         },
         content = {
-            ContentUpdateFood(navController)
+            ContentUpdateFood(navController, foodId)
         },
 //        modifier = Modifier.padding(PaddingValues(top = 32.dp))
     )
@@ -68,7 +71,7 @@ fun UpdateFoodScreen(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentUpdateFood(navController: NavController) {
+fun ContentUpdateFood(navController: NavController, foodId: Int) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -95,6 +98,17 @@ fun ContentUpdateFood(navController: NavController) {
         context = context,
         FoodDatabase::class.java, "foods-db2"
     ).build()
+    
+    val foodFlow by db.foodDao().getFoodById(foodId).collectAsState(initial = null)
+
+    LaunchedEffect(foodFlow) {
+        foodFlow?.let { food ->
+            typeFood = food.typefood
+            giamonan = food.pricefood.toString()
+            tenmonan = food.namefood
+            imageUrl = food.imageurl
+        }
+    }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -230,15 +244,17 @@ fun ContentUpdateFood(navController: NavController) {
         ) {
             Button(onClick = {
                 coroutineScope.launch {
-                    db.foodDao().insertFood(
-                        FoodModel(
-                            namefood = tenmonan,
-                            typefood = typeFood,
-                            pricefood = giamonan.toDoubleOrNull() ?: 0.0,
-                            imageurl = imageUrl
-                        )
+                    val updatedFood = foodFlow?.copy(
+                        namefood = tenmonan,
+                        typefood = typeFood,
+                        pricefood = giamonan.toDoubleOrNull() ?: 0.0,
+                        imageurl = imageUrl
                     )
-                    navController.popBackStack()
+                    updatedFood?.let {
+                        db.foodDao().updateFood(it)
+                        navController.popBackStack()
+                    }
+                    Toast.makeText(context, "Update Food Successfully", Toast.LENGTH_SHORT).show()
                 }
             },
                 colors = ButtonDefaults.buttonColors(

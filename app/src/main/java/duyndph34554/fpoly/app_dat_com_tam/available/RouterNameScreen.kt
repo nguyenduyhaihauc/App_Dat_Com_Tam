@@ -14,6 +14,10 @@ enum class RouterNameScreen(val router: String) {
     UpdateTypeRice("UpdateTypeRice"),
     ListTypeRice("ListTypeRice"),
     AddFood("AddFood"),
-    UpdateFood("UpdateFood"),
-    DeleteFood("DeleteFood")
+    UpdateFood("UpdateFood/{foodId}"),
+    DeleteFood("DeleteFood");
+
+    companion object {
+        fun UpdateFoodWithId(foodId: Int) = "UpdateFood/$foodId"
+    }
 }

@@ -2,9 +2,11 @@ package duyndph34554.fpoly.app_dat_com_tam.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddFoodScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddTypeRiceScreen
@@ -38,7 +40,14 @@ fun MainNavigation() {
 
 
         composable(RouterNameScreen.AddFood.router) { AddFoodScreen(navController) }
-        composable(RouterNameScreen.UpdateFood.router) { UpdateFoodScreen(navController)}
+        composable(
+            route = RouterNameScreen.UpdateFood.router,
+            arguments = listOf(navArgument("foodId") {type = NavType.IntType})
+        ) {
+            backStackEntry ->
+            val foodId = backStackEntry.arguments?.getInt("foodId") ?: 0
+            UpdateFoodScreen(navController = navController, foodId = foodId)
+        }
         composable(RouterNameScreen.DeleteFood.router) { DeleteFoodScreen(navController)}
     }
 }

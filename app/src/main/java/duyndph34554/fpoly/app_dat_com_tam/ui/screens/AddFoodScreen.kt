@@ -3,6 +3,7 @@ package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 import android.annotation.SuppressLint
 import android.app.Application
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -89,7 +90,7 @@ fun ContentAddFood(navController: NavController) {
     }
 
     var typeFood by remember {
-        mutableStateOf("Mon chinh")
+        mutableStateOf("Món chính")
     }
 
     var giamonan by remember {
@@ -257,17 +258,23 @@ fun ContentAddFood(navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
            Button(onClick = {
-                            coroutineScope.launch {
-                                db.foodDao().insertFood(
-                                    FoodModel(
-                                        namefood = tenmonan,
-                                        typefood = typeFood,
-                                        pricefood = giamonan.toDoubleOrNull() ?: 0.0,
-                                        imageurl = imageUrl
-                                    )
-                                )
-                                navController.popBackStack()
-                            }
+               if (tenmonan.trim().equals("") || giamonan.trim().equals("") ) {
+                   Toast.makeText(context, "Yêu cầu nhập đầy đủ", Toast.LENGTH_SHORT).show()
+               } else {
+                   coroutineScope.launch {
+                       db.foodDao().insertFood(
+                           FoodModel(
+                               namefood = tenmonan,
+                               typefood = typeFood,
+                               pricefood = giamonan.toDoubleOrNull() ?: 0.0,
+                               imageurl = imageUrl
+                           )
+                       )
+                       Toast.makeText(context, "Add Food Successfully", Toast.LENGTH_SHORT).show()
+                       navController.popBackStack()
+                   }
+               }
+
            },
                colors = ButtonDefaults.buttonColors(
                    containerColor = Color("#FFB703".toColorInt()),

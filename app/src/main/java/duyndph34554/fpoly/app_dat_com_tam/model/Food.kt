@@ -28,6 +28,8 @@ interface FoodDao{
 
     @Query("SELECT * FROM foodmodel WHERE foodid IN (:foodIds)")
     fun loadAllByIds(foodIds: IntArray):Flow<FoodModel>
+    @Query("SELECT * FROM foodmodel WHERE foodid = :foodId")
+    fun getFoodById(foodId: Int): Flow<FoodModel>
     @Insert
     suspend fun insertFood(vararg foodModel: FoodModel)
     @Delete
