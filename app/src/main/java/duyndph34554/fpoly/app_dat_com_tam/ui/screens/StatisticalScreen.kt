@@ -179,12 +179,14 @@ fun Statistical() {
                     .background(Color(0xFF2F2D2D))
                     .height(40.dp)
                     .clip(RoundedCornerShape(6.dp))
+                    .padding(start = 12.dp)
                 ,
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.CenterStart
             ) {
                 Text(
                     text = fromDate,
-                    color = Color.White
+                    color = Color.White,
+
                 )
             }
         }
@@ -219,8 +221,9 @@ fun Statistical() {
                     .background(Color(0xFF2F2D2D))
                     .height(40.dp)
                     .clip(RoundedCornerShape(6.dp))
+                    .padding(start = 12.dp)
                 ,
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.CenterStart
             ) {
                 Text(
                     text = toDate,
