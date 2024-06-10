@@ -52,14 +52,9 @@ fun ManageTypeRiceScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize(),
         snackbarHost = { CustomSnackbarHost(snackbarHostState) }
     ) {
-        Box(
-            modifier = Modifier
-                .padding(top = 120.dp)
-                .fillMaxSize()
-                .background(color = Color(0xFF252121)),
-        ) {
+
             ManageTypeRice(navController = navController, snackbarHostState = snackbarHostState)
-        }
+
     }
 }
 
@@ -93,8 +88,10 @@ fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHost
 
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.background(color = Color(0xFF252121)).fillMaxSize().padding(top = 110.dp),
+
+        ) {
         items(typeRiceList) { typeRice ->
             TypeRiceItem(
                 typeRice = typeRice,
