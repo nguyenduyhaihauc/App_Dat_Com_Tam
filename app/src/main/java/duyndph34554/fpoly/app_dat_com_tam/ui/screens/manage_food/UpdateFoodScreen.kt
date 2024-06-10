@@ -1,7 +1,13 @@
 package duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_food
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -27,6 +33,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,15 +51,15 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import androidx.room.Room
+import coil.compose.rememberImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.model.FoodDatabase
-import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
+import duyndph34554.fpoly.app_dat_com_tam.database.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun UpdateFoodScreen(navController: NavController) {
+fun UpdateFoodScreen(navController: NavController, foodId: Int) {
     Scaffold (
         topBar = {
             CustomTopBar(onBackClick = { navController.popBackStack() },
@@ -59,14 +67,15 @@ fun UpdateFoodScreen(navController: NavController) {
                 title = "Cum tưm đim")
         },
         content = {
-            ContentUpdateFood(navController)
+            ContentUpdateFood(navController, foodId)
         },
     )
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentUpdateFood(navController: NavController) {
+fun ContentUpdateFood(navController: NavController, foodId: Int) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -93,12 +102,29 @@ fun ContentUpdateFood(navController: NavController) {
         context = context,
         FoodDatabase::class.java, "foods-db2"
     ).build()
+    
+    val foodFlow by db.foodDao().getFoodById(foodId).collectAsState(initial = null)
+
+    LaunchedEffect(foodFlow) {
+        foodFlow?.let { food ->
+            typeFood = food.typefood
+            giamonan = food.pricefood.toString()
+            tenmonan = food.namefood
+            imageUrl = food.imageurl
+        }
+    }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) {uri: Uri? ->
         uri?.let {
-            imageUrl= it.toString()
+            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val source = ImageDecoder.createSource(context.contentResolver, it)
+                ImageDecoder.decodeBitmap(source)
+            } else {
+                MediaStore.Images.Media.getBitmap(context.contentResolver, it)
+            }
+            imageUrl = saveBitmapToInternalStorage(context, bitmap, tenmonan)
         }
     }
 
@@ -119,10 +145,17 @@ fun ContentUpdateFood(navController: NavController) {
                 elevation = null,
                 modifier = Modifier.size(205.dp)
             ) {
-                Image(painter = painterResource(id = R.drawable.img_addanh),
-                    contentDescription = null,
-                    modifier = Modifier.size(205.dp)
-                )
+                if (imageUrl.isNotEmpty()) {
+                    Image(painter = rememberImagePainter(imageUrl),
+                        contentDescription = null,
+                        modifier = Modifier.size(205.dp)
+                    )
+                } else {
+                    Image(painter = painterResource(id = R.drawable.img_addanh),
+                        contentDescription = null,
+                        modifier = Modifier.size(205.dp)
+                    )
+                }
             }
         }
 
@@ -228,15 +261,17 @@ fun ContentUpdateFood(navController: NavController) {
         ) {
             Button(onClick = {
                 coroutineScope.launch {
-                    db.foodDao().insertFood(
-                        FoodModel(
-                            namefood = tenmonan,
-                            typefood = typeFood,
-                            pricefood = giamonan.toDoubleOrNull() ?: 0.0,
-                            imageurl = imageUrl
-                        )
+                    val updatedFood = foodFlow?.copy(
+                        namefood = tenmonan,
+                        typefood = typeFood,
+                        pricefood = giamonan.toDoubleOrNull() ?: 0.0,
+                        imageurl = imageUrl
                     )
-                    navController.popBackStack()
+                    updatedFood?.let {
+                        db.foodDao().updateFood(it)
+                        navController.popBackStack()
+                    }
+                    Toast.makeText(context, "Update Food Successfully", Toast.LENGTH_SHORT).show()
                 }
             },
                 colors = ButtonDefaults.buttonColors(
