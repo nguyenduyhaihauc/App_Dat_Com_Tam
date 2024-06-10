@@ -12,14 +12,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -44,11 +42,12 @@ fun StatisticalScreen(navController: NavController) {
                 title = "Cum tứm đim"
             )
         },
-        content = { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues)) {
+        content = {
+            Box() {
                 Statistical()
             }
-        }
+
+        },
     )
 }
 
@@ -56,8 +55,7 @@ fun StatisticalScreen(navController: NavController) {
 fun Statistical() {
     var selectedTab by remember { mutableStateOf("Doanh thu") }
     var fromDate by remember { mutableStateOf("03/03/2023") }
-    // Lấy ngày hiện tại
-    //tiếng anh: fromDate: từ ngày, toDate: đến ngày
+
     val calendar = Calendar.getInstance()
     val currentDate = "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.YEAR)}"
     var toDate by remember { mutableStateOf(currentDate) }
@@ -73,7 +71,6 @@ fun Statistical() {
         Order("ID21220554", "03/03/2023", "09:53", "Hoàn thành", "57k"),
         Order("ID21220554", "03/03/2023", "09:53", "Hoàn thành", "57k"),
         Order("ID21220554", "03/03/2023", "09:53", "Hoàn thành", "57k"),
-
 
     )
 
@@ -103,7 +100,7 @@ fun Statistical() {
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF252121))
-            .padding(top = 14.dp)
+            .padding(top = 100.dp)
         ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
