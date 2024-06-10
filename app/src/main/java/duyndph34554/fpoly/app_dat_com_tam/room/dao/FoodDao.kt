@@ -1,4 +1,4 @@
-package duyndph34554.fpoly.app_dat_com_tam.dao
+package duyndph34554.fpoly.app_dat_com_tam.room.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

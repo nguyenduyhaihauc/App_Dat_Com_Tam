@@ -1,8 +1,6 @@
 package duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_food
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -53,7 +51,7 @@ import androidx.navigation.NavController
 import androidx.room.Room
 import coil.compose.rememberImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.database.FoodDatabase
+import duyndph34554.fpoly.app_dat_com_tam.room.database.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.saveBitmapToInternalStorage
 import kotlinx.coroutines.launch
