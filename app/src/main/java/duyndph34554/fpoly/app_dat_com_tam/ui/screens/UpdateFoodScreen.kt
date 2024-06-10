@@ -1,7 +1,12 @@
 package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,11 +52,14 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import androidx.room.Room
+import coil.compose.rememberImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -68,6 +76,7 @@ fun UpdateFoodScreen(navController: NavController, foodId: Int) {
 //        modifier = Modifier.padding(PaddingValues(top = 32.dp))
     )
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,7 +123,13 @@ fun ContentUpdateFood(navController: NavController, foodId: Int) {
         contract = ActivityResultContracts.GetContent()
     ) {uri: Uri? ->
         uri?.let {
-            imageUrl= it.toString()
+            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val source = ImageDecoder.createSource(context.contentResolver, it)
+                ImageDecoder.decodeBitmap(source)
+            } else {
+                MediaStore.Images.Media.getBitmap(context.contentResolver, it)
+            }
+            imageUrl = saveBitmapToInternalStorage(context, bitmap, tenmonan)
         }
     }
 
@@ -135,10 +150,17 @@ fun ContentUpdateFood(navController: NavController, foodId: Int) {
                 elevation = null,
                 modifier = Modifier.size(205.dp)
             ) {
-                Image(painter = painterResource(id = R.drawable.img_addanh),
-                    contentDescription = null,
-                    modifier = Modifier.size(205.dp)
-                )
+                if (imageUrl.isNotEmpty()) {
+                    Image(painter = rememberImagePainter(imageUrl),
+                        contentDescription = null,
+                        modifier = Modifier.size(205.dp)
+                    )
+                } else {
+                    Image(painter = painterResource(id = R.drawable.img_addanh),
+                        contentDescription = null,
+                        modifier = Modifier.size(205.dp)
+                    )
+                }
             }
         }
 

@@ -46,6 +46,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -133,18 +134,6 @@ fun ContentAddFood(navController: NavController) {
         FoodDatabase::class.java, "foods-db2"
     ).build()
 
-    // Sử dụng hàm getBitmapFromDrawable để lấy Bitmap
-//    val bitmap = getBitmapFromDrawable(R.drawable.img_addanh, context)
-//    val saveImageUrl = bitmap?.let { saveBitmapToInternalStorage(context, it, tenmonan) }
-
-
-//    val launcher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.GetContent()
-//    ) {uri: Uri? ->
-//        uri?.let {
-//            imageUrl= it.toString()
-//        }
-//    }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -186,8 +175,9 @@ fun ContentAddFood(navController: NavController) {
                         Image(
                             painter = rememberAsyncImagePainter(imageUrl),
                             contentDescription = null,
-                            modifier = Modifier.size(205.dp),
-                            contentScale = ContentScale.Crop
+                            modifier = Modifier.size(205.dp)
+                                .clip(RoundedCornerShape(10.dp)),
+//                            contentScale = ContentScale.Crop
                         )
                     }
                 }
