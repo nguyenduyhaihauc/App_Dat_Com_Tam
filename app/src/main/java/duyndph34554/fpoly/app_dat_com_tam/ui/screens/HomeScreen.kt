@@ -21,11 +21,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,23 +41,21 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.room.model.OrderModel
+import duyndph34554.fpoly.app_dat_com_tam.ui.viewmodel.OrderViewModel
+import java.text.DecimalFormat
 
-val OrderArray = listOf(
-    OrderModel("CT2E22E", 162.000, false),
-    OrderModel("CT2E206", 157.000, false),
-    OrderModel("CT2E23E", 160.000, false),
-    OrderModel("CT2E12E", 160.000, false),
-)
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview(showBackground = true, showSystemUi = true)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController ?= null) {
+fun HomeScreen(navController: NavController? = null) {
     val navController = navController ?: rememberNavController()
+    val orderViewModel: OrderViewModel = viewModel()
+    val orderList by orderViewModel.allOrders.observeAsState(initial = emptyList())
 
     Scaffold (
         topBar = {
@@ -62,13 +64,18 @@ fun HomeScreen(navController: NavController ?= null) {
                 title = "Cum tứm đim",
                 iconRight = R.drawable.logo_notifi)
         },
-        content = {
-            Box {
-                Content(navController = navController)
+        content = { paddingValues ->
+            Box(modifier = Modifier.padding(paddingValues)) {
+                Content(navController = navController, orders = orderList)
             }
-        },
-        modifier = Modifier.padding(PaddingValues(0.dp))
+        }
     )
+    LaunchedEffect(Unit) {
+        orderViewModel.insertOrder(OrderModel(nameOrder = "CT2E22E", totalAmount = 162000.0, status = false))
+        orderViewModel.insertOrder(OrderModel(nameOrder = "CT2E206", totalAmount = 157000.0, status = false))
+        orderViewModel.insertOrder(OrderModel(nameOrder = "CT2E23E", totalAmount = 160000.0, status = true))
+        orderViewModel.insertOrder(OrderModel(nameOrder = "CT2E12E", totalAmount = 160000.0, status = true))
+    }
 
 }
 
@@ -117,143 +124,126 @@ fun TopAppBar(navController: NavController, iconLeft: Int, title: String, iconRi
     }
 
 }
-
 @Composable
-fun Content(navController: NavController) {
-    Column (
+fun Content(navController: NavController, orders: List<OrderModel>) {
+    val decimalFormat = DecimalFormat("#,###.##") // Đảm bảo rằng định dạng có phần thập phân nếu cần thiết
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFF252121))
-            .padding(top = 50.dp)
+            .padding(top = 10.dp)
     ) {
+        // Thông tin ngày và doanh thu
         Box(
             modifier = Modifier.padding(vertical = 10.dp)
-        ){
-            Column (
+        ) {
+            Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 0.dp, vertical = 25.dp)
             ) {
-                Text(text = "Today: 19 - 05 - 2023",
+                Text(
+                    text = "Today: 19-05-2023",
                     fontSize = 20.sp,
                     fontWeight = FontWeight(600),
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = "Số lượng đơn: 2",
+                Text(
+                    text = "Số lượng đơn: ${orders.size}",
                     fontSize = 20.sp,
                     fontWeight = FontWeight(600),
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight(600)
-                        )
-                    ) {
-                        append("Doanh thu : ")
+                val totalRevenue = orders.sumOf { it.totalAmount }
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight(600)
+                            )
+                        ) {
+                            append("Doanh thu : ")
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                color = Color(0xFFFFA726), // Màu cam để hiển thị giống ảnh
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight(600)
+                            )
+                        ) {
+                            append("${decimalFormat.format(totalRevenue)} đ")
+                        }
                     }
-                    withStyle(
-                        style = SpanStyle(
-                            color = Color.Yellow,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight(600)
-                        )
-                    ) {
-                        append("320.000 đ")
-                    }
-                })
+                )
             }
         }
 
-
-        LazyColumn (
+        // Danh sách đơn hàng
+        LazyColumn(
             state = rememberLazyListState(),
         ) {
-            items(OrderArray) {
-                    order ->
+            items(orders) { order ->
                 ItemOrder(nameTitle = order.nameOrder, totalAmount = order.totalAmount, status = order.status)
             }
         }
-
-
     }
-
 }
-
 @Composable
 fun ItemOrder(nameTitle: String, totalAmount: Double, status: Boolean) {
-    Box {
-        Column (
+    val decimalFormat = DecimalFormat("#,###.##") // Đảm bảo đúng định dạng
+    Box(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp) // Căn chỉnh padding
+            .background(color = Color(0xFF2F2D2D), shape = RoundedCornerShape(10.dp))
+    ) {
+        Column(
             modifier = Modifier
-                .padding(10.dp)
-                .background(color = Color(0xFF2F2D2D), shape = RoundedCornerShape(10.dp))
                 .fillMaxWidth()
-                .height(110.dp),
+                .padding(10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box {
-                Row (
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp, vertical = 0.dp)
-                ) {
-                    Text(text = "Đơn hàng: $nameTitle",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight(600),
-                        color = Color.White
-                    )
-
-
-                    Box {
-                        Text(text = "||",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight(600),
-                            color = Color.White,
-                            modifier = Modifier.padding(end = 40.dp)
-                        )
-
-                        Spacer(modifier = Modifier.width(10.dp))
-
-                        Text(text = totalAmount.toString(),
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight(600),
-                            color = Color.White,
-                            modifier = Modifier.padding(start = 35.dp)
-
-                        )
-                    }
-
-                }
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Đơn hàng: $nameTitle",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight(600),
+                    color = Color.White
+                )
+                Text(
+                    text = "${decimalFormat.format(totalAmount)} đ",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight(600),
+                    color = Color.White
+                )
             }
-
-
-            Box {
-                Row (
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp, vertical = 0.dp)
-                ) {
-                    Text(text = "Trạng thái",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(500),
-                        color = Color.White
-                    )
-                    Text(text = if (status == false) "Từ chối" else "Chấp nhận",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(500),
-                        color = if (status == false) Color.Red else Color.Green
-                    )
-                }
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Trạng thái",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(500),
+                    color = Color.White
+                )
+                Text(
+                    text = if (!status) "Từ chối" else "Chấp nhận",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(500),
+                    color = if (!status) Color.Red else Color.Green
+                )
             }
-
         }
     }
 }
