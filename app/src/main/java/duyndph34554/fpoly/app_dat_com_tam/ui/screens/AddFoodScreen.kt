@@ -55,21 +55,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.room.Room
 import coil.compose.rememberAsyncImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.model.FoodDao
-import duyndph34554.fpoly.app_dat_com_tam.model.FoodDatabase
+import duyndph34554.fpoly.app_dat_com_tam.database.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -177,7 +169,7 @@ fun ContentAddFood(navController: NavController) {
                             contentDescription = null,
                             modifier = Modifier.size(205.dp)
                                 .clip(RoundedCornerShape(10.dp)),
-//                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }

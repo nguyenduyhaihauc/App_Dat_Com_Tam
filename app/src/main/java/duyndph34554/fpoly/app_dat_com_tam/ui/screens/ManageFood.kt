@@ -55,7 +55,7 @@ import androidx.room.Room
 import coil.compose.rememberImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
-import duyndph34554.fpoly.app_dat_com_tam.model.FoodDatabase
+import duyndph34554.fpoly.app_dat_com_tam.database.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.launch
