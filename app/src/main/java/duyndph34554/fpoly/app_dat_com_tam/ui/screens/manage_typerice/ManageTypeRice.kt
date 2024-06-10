@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import duyndph34554.fpoly.app_dat_com_tam.R
@@ -41,8 +42,11 @@ fun ManageTypeRiceScreen(navController: NavController) {
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 navController.navigate(RouterNameScreen.AddTypeRice.router)
-            }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "Add Type Rice")
+            },
+                containerColor = Color("#FE724C".toColorInt())) {
+                Icon(imageVector = Icons.Default.Add,
+                    contentDescription = "Add Type Rice",
+                    tint = Color.White)
             }
         },
         modifier = Modifier.fillMaxSize(),
@@ -50,7 +54,7 @@ fun ManageTypeRiceScreen(navController: NavController) {
     ) {
         Box(
             modifier = Modifier
-                .padding(top = 110.dp)
+                .padding(top = 120.dp)
                 .fillMaxSize()
                 .background(color = Color(0xFF252121)),
         ) {

@@ -72,9 +72,12 @@ fun ManageFood(navController: NavController) {
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 navController.navigate(RouterNameScreen.AddFood.router)
-            }) {
+            },
+                containerColor = Color("#FE724C".toColorInt())
+            ) {
                 Icon(imageVector = Icons.Default.Add,
-                    contentDescription = "add food")
+                    contentDescription = "add food",
+                    tint = Color.White)
             }
         }
     )
@@ -106,7 +109,7 @@ fun ContentManageFood(navController: NavController) {
         modifier = Modifier
             .background(color = Color("#252121".toColorInt()))
             .fillMaxSize()
-            .padding(top = 100.dp)
+            .padding(top = 120.dp)
     ) {
         items(foods) {food->
             FoodItem(food = food, navController,
@@ -254,12 +257,12 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
                     foodToDelete = null
                 },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color("#FFB703".toColorInt()),
-                        contentColor = Color.White
+                        containerColor = Color.Transparent,
+                        contentColor = Color("#FFB703".toColorInt())
                     ),
                     shape = RoundedCornerShape(10.dp)
                 ) {
-                    Text(text = "Hủy")
+                    Text(text = "Cancel", fontWeight = FontWeight(600))
                 }
             }
         )
