@@ -2,10 +2,17 @@ package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -63,7 +70,21 @@ import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
+fun saveBitmapToInternalStorage(
+    context: Context,
+    bitmap: Bitmap,
+    imageName: String
+): String {
+    val directory = context.filesDir
+    val file = File(directory, "$imageName.png")
+    val fileOutputStream = FileOutputStream(file)
+    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+    fileOutputStream.close()
+    return file.absolutePath
+}
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -112,11 +133,30 @@ fun ContentAddFood(navController: NavController) {
         FoodDatabase::class.java, "foods-db2"
     ).build()
 
+    // Sử dụng hàm getBitmapFromDrawable để lấy Bitmap
+//    val bitmap = getBitmapFromDrawable(R.drawable.img_addanh, context)
+//    val saveImageUrl = bitmap?.let { saveBitmapToInternalStorage(context, it, tenmonan) }
+
+
+//    val launcher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.GetContent()
+//    ) {uri: Uri? ->
+//        uri?.let {
+//            imageUrl= it.toString()
+//        }
+//    }
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ) {uri: Uri? ->
+    ) { uri: Uri? ->
         uri?.let {
-            imageUrl= it.toString()
+            val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val source = ImageDecoder.createSource(context.contentResolver, it)
+                ImageDecoder.decodeBitmap(source)
+            } else {
+                MediaStore.Images.Media.getBitmap(context.contentResolver, it)
+            }
+            imageUrl = saveBitmapToInternalStorage(context, bitmap, tenmonan)
         }
     }
 
@@ -262,6 +302,7 @@ fun ContentAddFood(navController: NavController) {
                    Toast.makeText(context, "Yêu cầu nhập đầy đủ", Toast.LENGTH_SHORT).show()
                } else {
                    coroutineScope.launch {
+
                        db.foodDao().insertFood(
                            FoodModel(
                                namefood = tenmonan,
