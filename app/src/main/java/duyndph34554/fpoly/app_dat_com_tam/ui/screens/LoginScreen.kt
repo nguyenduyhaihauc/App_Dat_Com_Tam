@@ -1,15 +1,11 @@
 package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 
 import android.annotation.SuppressLint
-import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,14 +13,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.room.Room
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
-import duyndph34554.fpoly.app_dat_com_tam.room.database.AccountDb
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomSnackbarHost
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTextField
+import duyndph34554.fpoly.app_dat_com_tam.ui.viewmodel.AccountViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -33,6 +30,7 @@ fun LoginScreen(navController: NavController) {
     val password = remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val viewModel: AccountViewModel = viewModel()
 
     Scaffold(
         snackbarHost = {
@@ -42,7 +40,7 @@ fun LoginScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF1F1B1E)), // Màu nền
+                .background(Color(0xFF1F1B1E)),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -88,17 +86,23 @@ fun LoginScreen(navController: NavController) {
                         val userName = email.value
                         val passWord = password.value
                         if (userName.isNotEmpty() && passWord.isNotEmpty()) {
-                            navController.navigate(RouterNameScreen.BottomScreen.router)
+                            coroutineScope.launch {
+                                viewModel.getAccountByUsernameAndPassword(userName, passWord).collect { account ->
+                                    if (account != null) {
+                                        navController.navigate(RouterNameScreen.BottomScreen.router)
+                                    } else {
+                                        snackbarHostState.showSnackbar("Sai tên đăng nhập hoặc mật khẩu", null, true)
+                                    }
+                                }
+                            }
                         } else {
                             coroutineScope.launch {
                                 snackbarHostState.showSnackbar("Không được để trống", null, true)
-
                             }
-
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFF5722) // Màu cam cho nút
+                        containerColor = Color(0xFFFF5722)
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -110,4 +114,3 @@ fun LoginScreen(navController: NavController) {
         }
     }
 }
-

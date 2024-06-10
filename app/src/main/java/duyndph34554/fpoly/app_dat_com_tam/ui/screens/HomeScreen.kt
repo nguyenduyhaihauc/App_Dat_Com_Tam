@@ -50,6 +50,7 @@ import duyndph34554.fpoly.app_dat_com_tam.ui.viewmodel.OrderViewModel
 import java.text.DecimalFormat
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController? = null) {
@@ -64,8 +65,8 @@ fun HomeScreen(navController: NavController? = null) {
                 title = "Cum tứm đim",
                 iconRight = R.drawable.logo_notifi)
         },
-        content = { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues)) {
+        content = {
+            Box(modifier = Modifier.padding(PaddingValues(top = 50.dp))) {
                 Content(navController = navController, orders = orderList)
             }
         }
