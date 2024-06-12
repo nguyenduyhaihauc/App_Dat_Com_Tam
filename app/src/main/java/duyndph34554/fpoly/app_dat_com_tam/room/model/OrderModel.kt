@@ -10,3 +10,4 @@ data class OrderModel(
     var totalAmount: Double,
     var status: Boolean
 )
+

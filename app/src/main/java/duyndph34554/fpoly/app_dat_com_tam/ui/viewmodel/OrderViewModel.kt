@@ -3,7 +3,6 @@ package duyndph34554.fpoly.app_dat_com_tam.ui.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import duyndph34554.fpoly.app_dat_com_tam.room.dao.OrderDao
 import duyndph34554.fpoly.app_dat_com_tam.room.database.AppDatabase
@@ -19,4 +18,18 @@ class OrderViewModel(application: Application) : AndroidViewModel(application) {
             orderDao.insertOrder(order)
         }
     }
+
+    fun updateOrderStatus(nameOrder: String, status: Boolean) {
+        viewModelScope.launch {
+            val order = orderDao.getOrderByName(nameOrder)
+            if (order != null) {
+                order.status = status
+                orderDao.updateOrder(order)
+            }
+        }
+    }
 }
+
+
+
+
