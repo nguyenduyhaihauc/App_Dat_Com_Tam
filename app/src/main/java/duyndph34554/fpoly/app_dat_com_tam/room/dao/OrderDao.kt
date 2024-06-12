@@ -11,4 +11,10 @@ interface OrderDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrder(order: OrderModel)
+
+    @Update
+    suspend fun updateOrder(order: OrderModel)
+
+    @Query("SELECT * FROM orders WHERE nameOrder = :nameOrder LIMIT 1")
+    suspend fun getOrderByName(nameOrder: String): OrderModel?
 }

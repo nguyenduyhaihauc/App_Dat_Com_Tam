@@ -7,8 +7,7 @@ import androidx.room.RoomDatabase
 import duyndph34554.fpoly.app_dat_com_tam.room.dao.OrderDao
 import duyndph34554.fpoly.app_dat_com_tam.room.model.OrderModel
 
-
-@Database(entities = [OrderModel::class], version = 1)
+@Database(entities = [OrderModel::class], version = 2) // Increment version if schema changed
 abstract class AppDatabase : RoomDatabase() {
     abstract fun orderDao(): OrderDao
 
@@ -22,7 +21,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "order_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

@@ -4,6 +4,7 @@ package duyndph34554.fpoly.app_dat_com_tam.ui.screens
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,7 +58,9 @@ fun HomeScreen(navController: NavController? = null) {
     val navController = navController ?: rememberNavController()
     val orderViewModel: OrderViewModel = viewModel()
     val orderList by orderViewModel.allOrders.observeAsState(initial = emptyList())
-
+    LaunchedEffect(key1 = Unit) {
+        orderViewModel.allOrders // Trigger to refresh the data
+    }
     Scaffold (
         topBar = {
             TopAppBar(navController = navController,
@@ -190,18 +193,20 @@ fun Content(navController: NavController, orders: List<OrderModel>) {
             state = rememberLazyListState(),
         ) {
             items(orders) { order ->
-                ItemOrder(nameTitle = order.nameOrder, totalAmount = order.totalAmount, status = order.status)
-            }
+                ItemOrder(navController, order)
+                }
         }
     }
-}
-@Composable
-fun ItemOrder(nameTitle: String, totalAmount: Double, status: Boolean) {
+}@Composable
+fun ItemOrder(navController: NavController, order: OrderModel) {
     val decimalFormat = DecimalFormat("#,###.##") // Đảm bảo đúng định dạng
     Box(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp) // Căn chỉnh padding
             .background(color = Color(0xFF2F2D2D), shape = RoundedCornerShape(10.dp))
+            .clickable {
+                navController.navigate("orderDetail/${order.nameOrder}/${order.totalAmount}/${order.status}")
+            }
     ) {
         Column(
             modifier = Modifier
@@ -215,13 +220,13 @@ fun ItemOrder(nameTitle: String, totalAmount: Double, status: Boolean) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Đơn hàng: $nameTitle",
+                    text = "Đơn hàng: ${order.nameOrder}",
                     fontSize = 18.sp,
                     fontWeight = FontWeight(600),
                     color = Color.White
                 )
                 Text(
-                    text = "${decimalFormat.format(totalAmount)} đ",
+                    text = "${decimalFormat.format(order.totalAmount)} đ",
                     fontSize = 18.sp,
                     fontWeight = FontWeight(600),
                     color = Color.White
@@ -239,10 +244,10 @@ fun ItemOrder(nameTitle: String, totalAmount: Double, status: Boolean) {
                     color = Color.White
                 )
                 Text(
-                    text = if (!status) "Từ chối" else "Chấp nhận",
+                    text = if (!order.status) "Từ chối" else "Chấp nhận",
                     fontSize = 16.sp,
                     fontWeight = FontWeight(500),
-                    color = if (!status) Color.Red else Color.Green
+                    color = if (!order.status) Color.Red else Color.Green
                 )
             }
         }

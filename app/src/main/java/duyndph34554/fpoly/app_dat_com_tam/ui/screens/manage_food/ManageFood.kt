@@ -56,6 +56,8 @@ import duyndph34554.fpoly.app_dat_com_tam.room.database.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -85,6 +87,7 @@ fun ManageFood(navController: NavController) {
 
 @Composable
 fun ContentManageFood(navController: NavController) {
+
     val context = LocalContext.current
     val db = Room.databaseBuilder(
         context,
@@ -189,6 +192,8 @@ fun FoodInfoDialog(food: FoodModel, onDismiss: () -> Unit) {
 
 @Composable
 fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit) {
+    val priceFormat = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+    val priceInVND = priceFormat.format(food.pricefood)
     var showDialog by remember {
         mutableStateOf(false)
     }
@@ -305,7 +310,7 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
                         fontSize = 16.sp,
                         fontWeight = FontWeight(400)
                     )
-                    Text(text = "Price: ${food.pricefood}",
+                    Text(text = "Price: $priceInVND",
                         color = Color("#FE724C".toColorInt()),
                         fontSize = 16.sp,
                         fontWeight = FontWeight(400)
