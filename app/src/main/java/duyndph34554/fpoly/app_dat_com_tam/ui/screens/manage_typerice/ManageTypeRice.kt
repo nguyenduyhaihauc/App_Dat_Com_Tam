@@ -62,6 +62,7 @@ fun ManageTypeRiceScreen(navController: NavController) {
 @Composable
 fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHostState) {
     val context = navController.context
+
     val database = remember { TypeRiceDb.getIntance(context) }
     val typeRiceDao = database.typeRiceDao()
 
@@ -69,13 +70,17 @@ fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHost
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
+        // gắn liền với composable
         coroutineScope.launch {
+            // load lại danh sách mỗi khi nhận được sự thay đổi từ flow phát ra
             typeRiceDao.getAllTypeRice().collect { list ->
                 typeRiceList = list
             }
         }
 
         coroutineScope.launch {
+            // khai báo listitem, gán nó bằng danh sách lấy được , chỉ lắng nghe 1 lần duy nhất từ flow sau đó stop
+            // chạy lại khi launchedEffect đc gọi lại khi composable bị hủy hoặc tạo mới
             val existingItems = typeRiceDao.getAllTypeRice().first()
             if (existingItems.isEmpty()) {
                 typeRiceDao.insertTypeRice(
@@ -119,8 +124,15 @@ fun TypeRiceItem(typeRice: TypeRice, onUpdate: () -> Unit, onDelete: () -> Unit)
     var showDialog by remember { mutableStateOf(false) }
 
     if (showDialog) {
-        CustomDialog(title = "Xác nhận xóa", message = "Bạn chắc chắn muốn xóa loại cơm này chứ?",
-            onConfirm = { onDelete() }, onCancel = { showDialog = false })
+        CustomDialog(
+            title = "Xác nhận xóa",
+            message = "Bạn chắc chắn muốn xóa loại cơm này chứ?",
+            onConfirm = {
+                onDelete()
+                showDialog = false
+            },
+            onCancel = { showDialog = false }
+        )
     }
 
     Card(
