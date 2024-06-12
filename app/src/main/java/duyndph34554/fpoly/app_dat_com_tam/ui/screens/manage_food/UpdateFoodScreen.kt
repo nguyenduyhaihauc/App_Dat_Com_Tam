@@ -51,7 +51,7 @@ import androidx.navigation.NavController
 import androidx.room.Room
 import coil.compose.rememberImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.room.database.FoodDatabase
+import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.saveBitmapToInternalStorage
 import kotlinx.coroutines.launch
@@ -95,14 +95,13 @@ fun ContentUpdateFood(navController: NavController, foodId: Int) {
         mutableStateOf("")
     }
 
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val db = Room.databaseBuilder(
-        context = context,
-        FoodDatabase::class.java, "foods-db2"
-    ).build()
+    val context = navController.context
+
+    val database = remember { MyDatabase.getInstance(context) }
+    val foodDao = database.foodDao()
     
-    val foodFlow by db.foodDao().getFoodById(foodId).collectAsState(initial = null)
+    val foodFlow by foodDao.getFoodById(foodId).collectAsState(initial = null)
 
     LaunchedEffect(foodFlow) {
         foodFlow?.let { food ->
@@ -267,7 +266,7 @@ fun ContentUpdateFood(navController: NavController, foodId: Int) {
                         imageurl = imageUrl
                     )
                     updatedFood?.let {
-                        db.foodDao().updateFood(it)
+                        foodDao.updateFood(it)
                         navController.popBackStack()
                     }
                     Toast.makeText(context, "Update Food Successfully", Toast.LENGTH_SHORT).show()

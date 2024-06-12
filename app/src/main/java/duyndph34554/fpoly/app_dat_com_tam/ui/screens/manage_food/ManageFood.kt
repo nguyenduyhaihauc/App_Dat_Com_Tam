@@ -52,8 +52,8 @@ import androidx.room.Room
 import coil.compose.rememberImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
-import duyndph34554.fpoly.app_dat_com_tam.room.database.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
+import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -62,6 +62,8 @@ import java.util.Locale
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ManageFood(navController: NavController) {
+
+
     Scaffold (
         topBar = {
             CustomTopBar(onBackClick = { navController.popBackStack() },
@@ -88,26 +90,23 @@ fun ManageFood(navController: NavController) {
 @Composable
 fun ContentManageFood(navController: NavController) {
 
-    val context = LocalContext.current
-    val db = Room.databaseBuilder(
-        context,
-        FoodDatabase::class.java, "foods-db2"
-    ).build()
-    
-    val foodList by db.foodDao().getAllFood().collectAsState(initial = emptyList())
+    val context = navController.context
+
+    val database = remember { MyDatabase.getInstance(context) }
+    val foodDao = database.foodDao()
+
+    val foodList by foodDao.getAllFood().collectAsState(initial = emptyList())
     var foods by remember {
         mutableStateOf(foodList)
     }
-// Cập nật lại danh sách món ăn khi thay đô
     fun refreshFoodList() {
         foods = foodList
     }
 
-//    Goi lại khi foodList thay đổi
     LaunchedEffect(foodList) {
         refreshFoodList()
     }
-    
+
     LazyColumn (
         modifier = Modifier
             .background(color = Color("#252121".toColorInt()))
@@ -208,12 +207,10 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
 
     val coroutineScope = rememberCoroutineScope()
 
-    val context = LocalContext.current
-    val db = Room.databaseBuilder(
-        context,
-        FoodDatabase::class.java, "foods-db2"
-    ).build()
+    val context = navController.context
 
+    val database = remember { MyDatabase.getInstance(context) }
+    val foodDao = database.foodDao()
     if (showDialog && foodToDelete != null) {
         AlertDialog(onDismissRequest = {showDialog = false},
             title = {
@@ -240,7 +237,7 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
             confirmButton = {
                 Button(onClick = {
                     coroutineScope.launch {
-                        db.foodDao().deleteFood(foodToDelete!!)
+                        foodDao.deleteFood(foodToDelete!!)
                         onDelete()
                         showDialog = false
                         foodToDelete = null

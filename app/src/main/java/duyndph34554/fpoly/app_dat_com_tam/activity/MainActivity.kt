@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 
 import duyndph34554.fpoly.app_dat_com_tam.navigation.MainNavigation
-import duyndph34554.fpoly.app_dat_com_tam.room.database.AccountDb
 
 
 class MainActivity : ComponentActivity() {

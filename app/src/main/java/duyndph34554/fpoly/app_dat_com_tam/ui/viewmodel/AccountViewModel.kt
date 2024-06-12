@@ -4,7 +4,7 @@ package duyndph34554.fpoly.app_dat_com_tam.ui.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import duyndph34554.fpoly.app_dat_com_tam.room.database.AccountDb
+import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.room.model.Account
 import duyndph34554.fpoly.app_dat_com_tam.room.responsitory.AccountRepository
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ class AccountViewModel(application: Application) : AndroidViewModel(application)
     private val repository: AccountRepository
 
     init {
-        val accountDb = AccountDb.getInstance(application)
+        val accountDb = MyDatabase.getInstance(application)
         repository = AccountRepository(accountDb)
     }
 

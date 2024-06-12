@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
-import duyndph34554.fpoly.app_dat_com_tam.room.database.TypeRiceDb
+import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomDialog
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomSnackbarHost
@@ -63,7 +63,7 @@ fun ManageTypeRiceScreen(navController: NavController) {
 fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHostState) {
     val context = navController.context
 
-    val database = remember { TypeRiceDb.getIntance(context) }
+    val database = remember { MyDatabase.getInstance(context) }
     val typeRiceDao = database.typeRiceDao()
 
     var typeRiceList by remember { mutableStateOf(listOf<TypeRice>()) }
@@ -109,7 +109,7 @@ fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHost
                     coroutineScope.launch {
 
                         typeRiceDao.deleteTypeRice(typeRice)
-                        typeRiceList = typeRiceList.filter { it.typeRiceId != typeRice.typeRiceId }
+                        typeRiceList = typeRiceList.filter { it.id != typeRice.id }
 
                         snackbarHostState.showSnackbar("Đã xóa thành công", null, true)
                     }

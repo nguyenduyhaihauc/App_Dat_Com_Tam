@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.room.database.TypeRiceDb
+import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.launch
@@ -93,7 +93,7 @@ fun UpdateTypeRice(navController: NavController, initialTypeRice: TypeRice) {
 }
 
 private suspend fun updateTypeRice(navController: NavController, typeRice: TypeRice) {
-    val dao = TypeRiceDb.getIntance(navController.context).typeRiceDao()
+    val dao = MyDatabase.getInstance(navController.context).typeRiceDao()
     dao.updateTypeRice(typeRice)
     navController.popBackStack()
 }

@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class TypeRice(
-    @PrimaryKey(autoGenerate = true) var typeRiceId: Int = 0,
+    @PrimaryKey(autoGenerate = true) var id: Int = 0,
     @ColumnInfo(name = "typeRiceName") var typeRiceName: String?,
 )

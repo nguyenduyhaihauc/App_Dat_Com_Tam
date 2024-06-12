@@ -13,7 +13,7 @@ interface TypeRiceDao {
     @Query("SELECT * FROM typerice")
     fun getAllTypeRice(): Flow<List<TypeRice>>
 
-    @Query("SELECT * FROM typerice WHERE typeRiceId IN (:typeRiceIds)")
+    @Query("SELECT * FROM typerice WHERE id IN (:typeRiceIds)")
     fun loadAllTypeRiceByIds(typeRiceIds: IntArray): Flow<TypeRice>
 
     @Insert

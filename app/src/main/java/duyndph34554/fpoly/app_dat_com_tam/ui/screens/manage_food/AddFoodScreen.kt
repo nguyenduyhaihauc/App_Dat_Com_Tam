@@ -53,8 +53,8 @@ import androidx.navigation.NavController
 import androidx.room.Room
 import coil.compose.rememberAsyncImagePainter
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.room.database.FoodDatabase
 import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
+import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
 import kotlinx.coroutines.launch
 import java.io.File
@@ -85,11 +85,9 @@ fun AddFoodScreen(navController: NavController) {
         content = {
             ContentAddFood(navController)
         },
-//        modifier = Modifier.padding(PaddingValues(top = 32.dp))
     )
 }
 
-//@Preview(showBackground = true, showSystemUi = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContentAddFood(navController: NavController) {
@@ -113,12 +111,12 @@ fun ContentAddFood(navController: NavController) {
         mutableStateOf("")
     }
 
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val db = Room.databaseBuilder(
-        context = context,
-        FoodDatabase::class.java, "foods-db2"
-    ).build()
+    val context = navController.context
+
+    val database = remember { MyDatabase.getInstance(context) }
+    val foodDao = database.foodDao()
+
 
 
     val launcher = rememberLauncherForActivityResult(
@@ -173,7 +171,7 @@ fun ContentAddFood(navController: NavController) {
 
 
 
-//    Loai mon an 
+//    Loai mon an
         Text(text = "Loại món",
             fontSize = 14.sp,
             fontWeight = FontWeight(400),
@@ -198,11 +196,11 @@ fun ContentAddFood(navController: NavController) {
                     .menuAnchor()
                     .fillMaxWidth()
             )
-            
+
             ExposedDropdownMenu(expanded = expanded,
                 onDismissRequest = {expanded = false}
             ) {
-                DropdownMenuItem(text = { 
+                DropdownMenuItem(text = {
                     Text(text = "Món chính")
                 }, onClick = {
                     typeFood = "Món chính"
@@ -266,9 +264,9 @@ fun ContentAddFood(navController: NavController) {
                 .fillMaxWidth()
                 .background(color = Color.White, shape = RoundedCornerShape(5.dp))
         )
-        
+
         Spacer(modifier = Modifier.height(60.dp))
-        
+
         Box (
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
@@ -279,12 +277,13 @@ fun ContentAddFood(navController: NavController) {
                } else {
                    coroutineScope.launch {
 
-                       db.foodDao().insertFood(
+                       foodDao.insertFood(
                            FoodModel(
                                namefood = tenmonan,
                                typefood = typeFood,
                                pricefood = giamonan.toDoubleOrNull() ?: 0.0,
-                               imageurl = imageUrl
+                               imageurl = imageUrl,
+                               typeRiceId =1
                            )
                        )
                        Toast.makeText(context, "Add Food Successfully", Toast.LENGTH_SHORT).show()
@@ -304,7 +303,7 @@ fun ContentAddFood(navController: NavController) {
                    fontSize = 20.sp,
                    fontWeight = FontWeight(700)
                )
-           } 
+           }
         }
 
     }

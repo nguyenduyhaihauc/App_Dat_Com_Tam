@@ -1,9 +1,9 @@
 package duyndph34554.fpoly.app_dat_com_tam.room.responsitory
 
-import duyndph34554.fpoly.app_dat_com_tam.room.database.TypeRiceDb
+import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 
-class TypeRiceResponsitory(val typeRiceDb: TypeRiceDb) {
+class TypeRiceResponsitory(val typeRiceDb: MyDatabase) {
     suspend fun addTypeRiceToRoom(typeRice: TypeRice) {
         typeRiceDb.typeRiceDao().insertTypeRice(typeRice)
     }

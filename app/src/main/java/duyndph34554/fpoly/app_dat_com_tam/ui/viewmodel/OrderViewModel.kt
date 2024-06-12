@@ -5,12 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import duyndph34554.fpoly.app_dat_com_tam.room.dao.OrderDao
-import duyndph34554.fpoly.app_dat_com_tam.room.database.AppDatabase
+import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.room.model.OrderModel
 import kotlinx.coroutines.launch
 
 class OrderViewModel(application: Application) : AndroidViewModel(application) {
-    private val orderDao: OrderDao = AppDatabase.getDatabase(application).orderDao()
+    private val orderDao: OrderDao = MyDatabase.getInstance(application).orderDao()
     val allOrders: LiveData<List<OrderModel>> = orderDao.getAllOrders()
 
     fun insertOrder(order: OrderModel) {

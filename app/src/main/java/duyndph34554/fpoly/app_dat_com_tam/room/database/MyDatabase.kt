@@ -5,37 +5,47 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import duyndph34554.fpoly.app_dat_com_tam.model.FoodModel
 import duyndph34554.fpoly.app_dat_com_tam.room.dao.AccountDao
+import duyndph34554.fpoly.app_dat_com_tam.room.dao.FoodDao
+import duyndph34554.fpoly.app_dat_com_tam.room.dao.OrderDao
+import duyndph34554.fpoly.app_dat_com_tam.room.dao.TypeRiceDao
 import duyndph34554.fpoly.app_dat_com_tam.room.model.Account
+import duyndph34554.fpoly.app_dat_com_tam.room.model.OrderModel
+import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [Account::class], version = 1, exportSchema = false)
-abstract class AccountDb : RoomDatabase() {
+@Database(entities = [TypeRice::class, FoodModel::class, OrderModel::class, Account::class], version = 3, exportSchema = false)
+abstract class MyDatabase : RoomDatabase() {
 
+    abstract fun typeRiceDao(): TypeRiceDao
+    abstract fun foodDao(): FoodDao
+    abstract fun orderDao(): OrderDao
     abstract fun accountDao(): AccountDao
 
     companion object {
-        @Volatile
-        private var INSTANCE: AccountDb? = null
 
-        fun getInstance(context: Context): AccountDb {
+        @Volatile
+        private var INSTANCE: MyDatabase? = null
+
+        fun getInstance(context: Context): MyDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AccountDb::class.java,
-                    "account2"
+                    MyDatabase::class.java,
+                    "comtamm4.db"
                 )
                     .fallbackToDestructiveMigration()
-                    .addCallback(AccountDatabaseCallback())
+                    .addCallback(DatabaseCallback())
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
 
-        private class AccountDatabaseCallback : RoomDatabase.Callback() {
+        private class DatabaseCallback : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
