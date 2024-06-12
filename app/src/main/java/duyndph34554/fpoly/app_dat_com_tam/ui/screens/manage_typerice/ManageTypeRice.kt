@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ManageTypeRiceScreen(navController: NavController) {
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
