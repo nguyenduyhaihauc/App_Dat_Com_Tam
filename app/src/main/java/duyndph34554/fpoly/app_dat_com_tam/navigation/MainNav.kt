@@ -1,9 +1,6 @@
 package duyndph34554.fpoly.app_dat_com_tam.navigation
 
-import AddTypeRiceScreen
-import UpdateTypeRiceScreen
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,7 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
-import duyndph34554.fpoly.app_dat_com_tam.room.model.OrderModel
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddFoodScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.HomeScreen
@@ -22,8 +18,9 @@ import duyndph34554.fpoly.app_dat_com_tam.ui.screens.OrderDetailScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.SplashScreen
 
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_food.UpdateFoodScreen
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_typerice.ManageTypeRice
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_typerice.AddTypeRiceScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_typerice.ManageTypeRiceScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_typerice.UpdateTypeRiceScreen
 
 
 @Composable

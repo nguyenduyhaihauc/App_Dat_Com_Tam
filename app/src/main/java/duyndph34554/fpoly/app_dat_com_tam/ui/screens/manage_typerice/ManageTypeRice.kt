@@ -20,11 +20,12 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import duyndph34554.fpoly.app_dat_com_tam.R
 import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
-import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomDialog
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomSnackbarHost
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
+import duyndph34554.fpoly.app_dat_com_tam.ui.utils.provideTypeRiceViewModel
+import duyndph34554.fpoly.app_dat_com_tam.ui.viewmodel.TypeRiceViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -33,6 +34,7 @@ import kotlinx.coroutines.launch
 fun ManageTypeRiceScreen(navController: NavController) {
 
     val snackbarHostState = remember { SnackbarHostState() }
+    val typeRiceViewModel = provideTypeRiceViewModel(navController.context)
 
     Scaffold(
         topBar = {
@@ -41,53 +43,49 @@ fun ManageTypeRiceScreen(navController: NavController) {
             }, image = R.drawable.logo_home, title = "Cum tứm đim")
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                navController.navigate(RouterNameScreen.AddTypeRice.router)
-            },
-                containerColor = Color("#FE724C".toColorInt())) {
-                Icon(imageVector = Icons.Default.Add,
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(RouterNameScreen.AddTypeRice.router)
+                },
+                containerColor = Color("#FE724C".toColorInt())
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
                     contentDescription = "Add Type Rice",
-                    tint = Color.White)
+                    tint = Color.White
+                )
             }
         },
         modifier = Modifier.fillMaxSize(),
         snackbarHost = { CustomSnackbarHost(snackbarHostState) }
     ) {
-
-            ManageTypeRice(navController = navController, snackbarHostState = snackbarHostState)
-
+        ManageTypeRice(
+            navController = navController,
+            snackbarHostState = snackbarHostState,
+            viewModel = typeRiceViewModel
+        )
     }
 }
 
 @Composable
-fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHostState) {
-    val context = navController.context
+fun ManageTypeRice(
+    navController: NavController,
+    snackbarHostState: SnackbarHostState,
+    viewModel: TypeRiceViewModel
+) {
 
-    val database = remember { MyDatabase.getInstance(context) }
-    val typeRiceDao = database.typeRiceDao()
+    val typeRiceList by viewModel.typeRices.collectAsState(initial = listOf())
 
-    var typeRiceList by remember { mutableStateOf(listOf<TypeRice>()) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
-        // gắn liền với composable
         coroutineScope.launch {
-            // load lại danh sách mỗi khi nhận được sự thay đổi từ flow phát ra
-            typeRiceDao.getAllTypeRice().collect { list ->
-                typeRiceList = list
-            }
-        }
-
-        coroutineScope.launch {
-            // khai báo listitem, gán nó bằng danh sách lấy được , chỉ lắng nghe 1 lần duy nhất từ flow sau đó stop
-            // chạy lại khi launchedEffect đc gọi lại khi composable bị hủy hoặc tạo mới
-            val existingItems = typeRiceDao.getAllTypeRice().first()
+            val existingItems = viewModel.typeRices.first()
             if (existingItems.isEmpty()) {
-                typeRiceDao.insertTypeRice(
-                    TypeRice(typeRiceName = "Jasmine Rice"),
-                    TypeRice(typeRiceName = "Basmati Rice"),
-                    TypeRice(typeRiceName = "Sushi Rice")
-                )
+                viewModel.addTypeRice(TypeRice(typeRiceName = "Món chính"))
+                viewModel.addTypeRice(TypeRice(typeRiceName = "Món thêm"))
+                viewModel.addTypeRice(TypeRice(typeRiceName = "Topping"))
+                viewModel.addTypeRice(TypeRice(typeRiceName = "Khác"))
             }
         }
     }
@@ -95,9 +93,11 @@ fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHost
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.background(color = Color(0xFF252121)).fillMaxSize().padding(top = 110.dp),
-
-        ) {
+        modifier = Modifier
+            .background(color = Color(0xFF252121))
+            .fillMaxSize()
+            .padding(top = 110.dp),
+    ) {
         items(typeRiceList) { typeRice ->
             TypeRiceItem(
                 typeRice = typeRice,
@@ -107,10 +107,7 @@ fun ManageTypeRice(navController: NavController, snackbarHostState: SnackbarHost
                 },
                 onDelete = {
                     coroutineScope.launch {
-
-                        typeRiceDao.deleteTypeRice(typeRice)
-                        typeRiceList = typeRiceList.filter { it.id != typeRice.id }
-
+                        viewModel.deleteTypeRice(typeRice)
                         snackbarHostState.showSnackbar("Đã xóa thành công", null, true)
                     }
                 }

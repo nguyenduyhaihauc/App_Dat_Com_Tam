@@ -1,3 +1,5 @@
+package duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_typerice
+
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,15 +13,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.room.database.MyDatabase
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
-
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomTopBar
+import duyndph34554.fpoly.app_dat_com_tam.ui.utils.provideTypeRiceViewModel
+import duyndph34554.fpoly.app_dat_com_tam.ui.viewmodel.TypeRiceViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AddTypeRiceScreen(navController: NavController) {
+    val typeRiceViewModel = provideTypeRiceViewModel(navController.context)
+
     Scaffold(
         topBar = {
             CustomTopBar(onBackClick = {
@@ -27,14 +31,14 @@ fun AddTypeRiceScreen(navController: NavController) {
             }, image = R.drawable.logo_home, title = "Cum tứm đim")
         },
         content = {
-            AddTypeRice(navController = navController)
+            AddTypeRice(navController = navController,typeRiceViewModel)
         },
         modifier = Modifier.padding(0.dp)
     )
 }
 
 @Composable
-fun AddTypeRice(navController: NavController) {
+fun AddTypeRice(navController: NavController,typeRiceViewModel: TypeRiceViewModel) {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     val coroutineScope = rememberCoroutineScope()
 
@@ -60,8 +64,7 @@ fun AddTypeRice(navController: NavController) {
             onClick = {
                 if (text.text.isNotEmpty()) {
                     coroutineScope.launch {
-                        val dao = MyDatabase.getInstance(navController.context).typeRiceDao()
-                        dao.insertTypeRice(TypeRice(typeRiceName = text.text))
+                        typeRiceViewModel.addTypeRice(TypeRice(typeRiceName = text.text))
                         navController.popBackStack()
                     }
                 }

@@ -35,7 +35,7 @@ abstract class MyDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     MyDatabase::class.java,
-                    "comtamm4.db"
+                    "comtamm5.db"
                 )
                     .fallbackToDestructiveMigration()
                     .addCallback(DatabaseCallback())
