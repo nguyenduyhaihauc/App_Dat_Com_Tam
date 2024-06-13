@@ -1,7 +1,6 @@
 package duyndph34554.fpoly.app_dat_com_tam.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 import duyndph34554.fpoly.app_dat_com_tam.room.responsitory.TypeRiceResponsitory
