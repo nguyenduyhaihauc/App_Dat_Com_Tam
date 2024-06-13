@@ -287,7 +287,6 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row (
-//                verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = Modifier.width(10.dp))
                 Image(painter = rememberImagePainter(food.imageurl),
@@ -299,7 +298,6 @@ fun FoodItem(food: FoodModel, navController: NavController, onDelete: () -> Unit
                 Spacer(modifier = Modifier.width(15.dp))
 
                 Column (
-//                    verticalArrangement = Arrangement.SpaceEvenly
                 ) {
 //                    Text(text = "Id: ${food.foodid}")
                     Text(text = "Name: ${food.namefood}",

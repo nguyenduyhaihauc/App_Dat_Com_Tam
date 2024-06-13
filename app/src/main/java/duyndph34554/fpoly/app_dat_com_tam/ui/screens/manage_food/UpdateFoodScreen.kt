@@ -80,7 +80,7 @@ fun ContentUpdateFood(navController: NavController, foodId: Int) {
     }
 
     var typeFood by remember {
-        mutableStateOf("Mon chinh")
+        mutableStateOf("")
     }
 
     var giamonan by remember {
@@ -100,7 +100,12 @@ fun ContentUpdateFood(navController: NavController, foodId: Int) {
 
     val database = remember { MyDatabase.getInstance(context) }
     val foodDao = database.foodDao()
-    
+    val typeDao = database.typeRiceDao()
+    val typeList by typeDao.getAllTypeRice().collectAsState(initial = emptyList())
+    // Gán giá trị mặc định cho typeFood nếu typeList không rỗng
+    if (typeList.isNotEmpty() && typeFood.isEmpty()) {
+        typeFood = typeList[0].typeRiceName ?: ""
+    }
     val foodFlow by foodDao.getFoodById(foodId).collectAsState(initial = null)
 
     LaunchedEffect(foodFlow) {
@@ -182,37 +187,41 @@ fun ContentUpdateFood(navController: NavController, foodId: Int) {
                     .menuAnchor()
                     .fillMaxWidth()
             )
-
-            ExposedDropdownMenu(expanded = expanded,
-                onDismissRequest = {expanded = false}
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = it }
             ) {
-                DropdownMenuItem(text = {
-                    Text(text = "Món chính")
-                }, onClick = {
-                    typeFood = "Món chính"
-                    expanded = false
-                })
-                DropdownMenuItem(text = {
-                    Text(text = "Món thêm")
-                }, onClick = {
-                    typeFood = "Món thêm"
-                    expanded = false
-                })
+                TextField(
+                    value = typeFood,
+                    onValueChange = {},
+                    readOnly = true,
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
+                )
 
-                DropdownMenuItem(text = {
-                    Text(text = "Topping")
-                }, onClick = {
-                    typeFood = "Topping"
-                    expanded = false
-                })
-
-                DropdownMenuItem(text = {
-                    Text(text = "Khác")
-                }, onClick = {
-                    typeFood = "Khác"
-                    expanded = false
-                })
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    typeList.forEach { typeRice ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(text = typeRice.typeRiceName ?: "Khác")
+                            },
+                            onClick = {
+                                typeFood = typeRice.typeRiceName ?: "Khác"
+                                expanded = false
+                            }
+                        )
+                    }
+                }
             }
+
         }
 
 //        Gia mon an
