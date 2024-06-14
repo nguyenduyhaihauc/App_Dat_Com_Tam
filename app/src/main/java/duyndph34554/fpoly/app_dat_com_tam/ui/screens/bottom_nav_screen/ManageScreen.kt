@@ -1,4 +1,4 @@
-package duyndph34554.fpoly.app_dat_com_tam.ui.screens
+package duyndph34554.fpoly.app_dat_com_tam.ui.screens.bottom_nav_screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
+import duyndph34554.fpoly.app_dat_com_tam.navigation.RouterNameScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

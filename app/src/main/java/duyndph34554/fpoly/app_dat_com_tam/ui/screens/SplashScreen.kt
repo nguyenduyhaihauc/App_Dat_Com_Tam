@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
+import duyndph34554.fpoly.app_dat_com_tam.navigation.RouterNameScreen
 import kotlinx.coroutines.delay
 
 @Composable

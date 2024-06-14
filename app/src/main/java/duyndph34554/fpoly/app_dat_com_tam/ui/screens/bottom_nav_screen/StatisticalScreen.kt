@@ -1,4 +1,4 @@
-package duyndph34554.fpoly.app_dat_com_tam.ui.screens
+package duyndph34554.fpoly.app_dat_com_tam.ui.screens.bottom_nav_screen
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.widget.DatePicker

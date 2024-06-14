@@ -71,7 +71,7 @@ fun CustomTextField(
                 onValueChange = onValueChange,
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                placeholder = { Text(text = "Nhập $label") }, // Placeholder text
+                placeholder = { Text(text = "Enter...") }, // Placeholder text
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color.White,
                     focusedBorderColor = Color.White,

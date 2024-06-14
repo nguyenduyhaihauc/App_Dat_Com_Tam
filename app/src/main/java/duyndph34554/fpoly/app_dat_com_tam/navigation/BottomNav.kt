@@ -31,12 +31,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.HomeScreen
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageScreen
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.StatisticalScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.bottom_nav_screen.HomeScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.bottom_nav_screen.ManageScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.bottom_nav_screen.StatisticalScreen
 
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.SupportScreen
+import duyndph34554.fpoly.app_dat_com_tam.ui.screens.bottom_nav_screen.SupportScreen
 
 @Composable
 fun BottomBar(navCtrl: NavController) {

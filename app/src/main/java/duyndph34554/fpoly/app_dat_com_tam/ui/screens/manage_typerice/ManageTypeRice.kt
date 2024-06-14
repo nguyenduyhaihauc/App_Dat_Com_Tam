@@ -19,7 +19,7 @@ import androidx.core.graphics.toColorInt
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import duyndph34554.fpoly.app_dat_com_tam.R
-import duyndph34554.fpoly.app_dat_com_tam.available.RouterNameScreen
+import duyndph34554.fpoly.app_dat_com_tam.navigation.RouterNameScreen
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomDialog
 import duyndph34554.fpoly.app_dat_com_tam.ui.compoments.CustomSnackbarHost

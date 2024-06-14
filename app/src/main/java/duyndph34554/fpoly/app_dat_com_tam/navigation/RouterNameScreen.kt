@@ -1,4 +1,4 @@
-package duyndph34554.fpoly.app_dat_com_tam.available
+package duyndph34554.fpoly.app_dat_com_tam.navigation
 
 enum class RouterNameScreen(val router: String) {
     Home("Home"),
