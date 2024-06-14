@@ -122,10 +122,3 @@ fun Manage(navController: NavController) {
     }
 
 }
-
-@Preview
-@Composable
-fun show() {
-    val navController = rememberNavController()
-    Manage(navController = navController)
-}

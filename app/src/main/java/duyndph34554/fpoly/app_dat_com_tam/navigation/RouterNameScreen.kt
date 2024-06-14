@@ -12,7 +12,6 @@ enum class RouterNameScreen(val router: String) {
     ManageTypeRice("ManageTypeRice"),
     AddTypeRice("AddTypeRice"),
     UpdateTypeRice("UpdateTypeRice"),
-    DeltailsOrder("DeltailsOrder"),
     AddFood("AddFood"),
     UpdateFood("UpdateFood/{foodId}");
 
