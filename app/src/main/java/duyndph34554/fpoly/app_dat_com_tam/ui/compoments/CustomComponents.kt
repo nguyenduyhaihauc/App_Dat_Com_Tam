@@ -96,7 +96,7 @@ fun PasswordTextField(
         onValueChange = onValueChange,
         modifier = modifier,
         singleLine = true,
-        placeholder = { Text(text = "Nhập mật khẩu") }, // Placeholder text
+        placeholder = { Text(text = "Enter...") },
         trailingIcon = {
             Row {
                 IconButton(

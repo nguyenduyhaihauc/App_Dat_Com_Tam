@@ -77,8 +77,6 @@ fun BottomBar(navCtrl: NavController) {
                                 )
                             }
 
-//                            Spacer(modifier = Modifier.height(3.dp))
-
                             Text(text = "Trang chủ",
                                 color = if (selected.value == RouterNameScreen.Home.router) Color.Yellow else Color.White,
                                 fontSize = 14.sp,
@@ -106,8 +104,6 @@ fun BottomBar(navCtrl: NavController) {
                                     modifier = Modifier.size(22.dp)
                                 )
                             }
-
-//                            Spacer(modifier = Modifier.height(3.dp))
 
                             Text(text = "Thống kê",
                                 color = if (selected.value == RouterNameScreen.Statistical.router) Color.Yellow else Color.White,
@@ -137,8 +133,6 @@ fun BottomBar(navCtrl: NavController) {
                                 )
                             }
 
-//                            Spacer(modifier = Modifier.height(3.dp))
-
                             Text(text = "Quản lý",
                                 color = if (selected.value == RouterNameScreen.Manage.router) Color.Yellow else Color.White,
                                 fontSize = 14.sp,
@@ -166,8 +160,6 @@ fun BottomBar(navCtrl: NavController) {
                                     modifier = Modifier.size(22.dp)
                                 )
                             }
-
-//                            Spacer(modifier = Modifier.height(3.dp))
 
                             Text(text = "Hỗ trợ",
                                 color = if (selected.value == RouterNameScreen.Support.router) Color.Yellow else Color.White,

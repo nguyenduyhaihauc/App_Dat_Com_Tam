@@ -9,13 +9,10 @@ import androidx.navigation.navArgument
 import com.google.gson.Gson
 import duyndph34554.fpoly.app_dat_com_tam.room.model.TypeRice
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.AddFoodScreen
-import duyndph34554.fpoly.app_dat_com_tam.ui.screens.bottom_nav_screen.HomeScreen
-
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.LoginScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.ManageFood
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.OrderDetailScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.SplashScreen
-
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_food.UpdateFoodScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_typerice.AddTypeRiceScreen
 import duyndph34554.fpoly.app_dat_com_tam.ui.screens.manage_typerice.ManageTypeRiceScreen
@@ -34,6 +31,8 @@ fun MainNavigation() {
         composable(RouterNameScreen.Login.router) { LoginScreen(navController) }
 
         composable(RouterNameScreen.BottomScreen.router) { BottomBar(navController) }
+
+        composable(RouterNameScreen.ManageTypeRice.router) { ManageTypeRiceScreen(navController) }
         composable(RouterNameScreen.AddTypeRice.router) { AddTypeRiceScreen(navController) }
         composable(
             "${RouterNameScreen.UpdateTypeRice.router}/{typeRice}",
@@ -44,10 +43,7 @@ fun MainNavigation() {
             UpdateTypeRiceScreen(navController, typeRice)
         }
 
-        composable(RouterNameScreen.ManageTypeRice.router) { ManageTypeRiceScreen(navController) }
         composable(RouterNameScreen.ManageFood.router) { ManageFood(navController) }
-
-
         composable(RouterNameScreen.AddFood.router) { AddFoodScreen(navController) }
         composable(
             route = RouterNameScreen.UpdateFood.router,
@@ -58,13 +54,6 @@ fun MainNavigation() {
             UpdateFoodScreen(navController = navController, foodId = foodId)
         }
 
-
-
-
-
-        composable("home") {
-            HomeScreen(navController = navController)
-        }
         composable(
             "orderDetail/{orderName}/{totalAmount}/{status}",
             arguments = listOf(
@@ -78,5 +67,6 @@ fun MainNavigation() {
             val status = backStackEntry.arguments?.getBoolean("status") ?: false
             OrderDetailScreen(navController, orderName, totalAmount, status)
         }
+
     }
 }
